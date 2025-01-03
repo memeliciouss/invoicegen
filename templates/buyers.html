@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Buyers
+{% endblock title %}
+    
+{% block body %}
+<div>
+    <h3>List of Buyers</h3>
+    {% for buyer in buyers %}
+    <p>{{forloop.counter}}  {{buyer.name}}</p>
+    {% endfor %}
+</div>
+{% endblock body %}
+    
