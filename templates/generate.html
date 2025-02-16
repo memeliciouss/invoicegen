@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Add New Invoice
+{% endblock title %}
+
+{% block body %}
+    <div>
+        <h2>Add New Invoice</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="buyerID">Select Buyer by ID:</label>
+            <select name="buyerID" id="buyerID">
+                {% for buyer in buyers %}
+                    <option value="{{ buyer.buyerID }}">{{ buyer.buyerID }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Add Invoice</button>
+        </form>
+    </div>
+{% endblock body %}

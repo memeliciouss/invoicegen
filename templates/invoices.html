@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Invoices List
+{% endblock title %}
+
+{% block body %}
+    <div>
+        <h2>Invoices List</h2>
+        <ul>
+            {% for invoice in invoices %}
+                <li>Invoice ID: {{ invoice.invID }}, Buyer ID: {{ invoice.buyerID.buyerID }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock body %}

@@ -4,7 +4,10 @@ from buyer.models import buyer
 # Create your views here.
 def buyers(request):
     buyers=buyer.objects.all()
-    return render(request, 'buyers.html', {'buyers':buyers})
+    context={
+        'buyers':buyers
+    }
+    return render(request, 'buyers.html',context)
 
 def add(request):
     if request.method == "POST":
