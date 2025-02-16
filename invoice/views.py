@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from invoice.models import invoice
 from buyer.models import buyer
 
@@ -19,11 +19,12 @@ def generate(request):
     return render(request, 'generate.html',context)
 
 def inv(request, invID):
-    invoice_instance=invoice.objects.get(invID=invID)
+    # invoice_instance=invoice.objects.get(invID=invID)
+    invoice_instance=get_object_or_404(invoice,invID=invID)
     context={
-        'invoices':invoice_instance
+        'invoice':invoice_instance
     }
-    return render(request, 'invoices.html', context)
+    return render(request, 'invoice.html', context)
 
 def all(request):
     context={
