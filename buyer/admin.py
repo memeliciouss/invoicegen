@@ -1,5 +1,5 @@
 from django.contrib import admin
-from buyer.models import buyer
+from buyer.models import Buyer
 
 # Register your models here.
-admin.site.register(buyer) #added manually
+admin.site.register(Buyer) #added manually

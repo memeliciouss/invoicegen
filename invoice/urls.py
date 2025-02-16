@@ -5,5 +5,5 @@ from invoice import views
 urlpatterns = [
     path('generate',views.generate, name='geninvoice'),
     path('<int:invID>', views.inv, name='inv'),
-    path('all', views.all, name='all')
+    path('list', views.list, name='list')
 ]

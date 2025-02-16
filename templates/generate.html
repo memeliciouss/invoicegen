@@ -15,6 +15,19 @@
                     <option value="{{ buyer.buyerID }}">{{ buyer.buyerID }}</option>
                 {% endfor %}
             </select>
+
+            <label for="itemName">Item Name:</label>
+            <input type="text" name="itemName" id="itemName" required>
+
+            <label for="rate">Rate:</label>
+            <input type="number" name="rate" id="rate" required>
+
+            <label for="gst">GST:</label>
+            <input type="number" name="gst" id="gst" required>
+
+            <label for="qty">Quantity:</label>
+            <input type="number" name="qty" id="qty" required>
+
             <button type="submit">Add Invoice</button>
         </form>
     </div>

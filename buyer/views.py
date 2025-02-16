@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from buyer.models import buyer
+from buyer.models import Buyer
 
 # Create your views here.
 def buyers(request):
-    buyers=buyer.objects.all()
+    buyers=Buyer.objects.all()
     context={
         'buyers':buyers
     }
@@ -16,7 +16,7 @@ def add(request):
         state = request.POST.get('state')
         pin = request.POST.get('pin')
         gst = request.POST.get('gst')
-        newBuyer=buyer(name=name, adr=adr, state=state, pin=pin, gst=gst)
+        newBuyer=Buyer(name=name, adr=adr, state=state, pin=pin, gst=gst)
         newBuyer.save()
 
         return redirect('/buyers')

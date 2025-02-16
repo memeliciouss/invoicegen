@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Invoices List
+{% endblock title %}
+
+{% block body %}
+    <div>
+        <h2>Invoices</h2>
+        <p>Invoice ID: {{ invoice.invID }}</p>
+        <ul>
+            {% for item in items %}
+                <li>{{ item.itemName }} - Rate: {{ item.rate }} - GST: {{ item.gst }} - Qty: {{ item.qty }}</li>
+            {% endfor %}
+        </ul>
+        <ul>
+            <li>BuyerID: {{ invoice.buyerID.buyerID }}</li>
+            <li>Buyer Name: {{ invoice.buyerID.name }}</li>
+        </ul>
+    </div>
+{% endblock body %}
