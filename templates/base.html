@@ -12,6 +12,43 @@
     {% block body %}
         
     {% endblock body %}
-        
+
+    <!-- button to add item rows and delete rows -->
+    <script>
+        // Function to add a new row
+        document.getElementById('add-item').addEventListener('click', function() {
+            const container = document.getElementById('items-container');
+            const newRow = document.createElement('div');
+            newRow.classList.add('item-row');
+            newRow.innerHTML = `
+                <label for="itemName">Item Name:</label>
+                <input type="text" name="itemName" required>
+
+                <label for="rate">Rate:</label>
+                <input type="number" name="rate" required>
+
+                <label for="gst">GST:</label>
+                <input type="number" name="gst" required>
+
+                <label for="qty">Quantity:</label>
+                <input type="number" name="qty" required>
+
+                <button type="button" class="delete-row">Delete</button>
+            `;
+            container.appendChild(newRow);
+
+            // Add event listener to the new delete button
+            newRow.querySelector('.delete-row').addEventListener('click', function() {
+                newRow.remove();
+            });
+        });
+
+        // Add event listeners to existing delete buttons (if any)
+        document.querySelectorAll('.delete-row').forEach(button => {
+            button.addEventListener('click', function() {
+                this.closest('.item-row').remove();
+            });
+        });
+    </script>
 </body>
 </html>

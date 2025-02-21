@@ -16,19 +16,26 @@
                 {% endfor %}
             </select>
 
-            <label for="itemName">Item Name:</label>
-            <input type="text" name="itemName" id="itemName" required>
+            <div id="items-container">
+                <div class="item-row">
+                    <label for="itemName">Item Name:</label>
+                    <input type="text" name="itemName" required>
 
-            <label for="rate">Rate:</label>
-            <input type="number" name="rate" id="rate" required>
+                    <label for="rate">Rate:</label>
+                    <input type="number" name="rate" required>
 
-            <label for="gst">GST:</label>
-            <input type="number" name="gst" id="gst" required>
+                    <label for="gst">GST:</label>
+                    <input type="number" name="gst" required>
 
-            <label for="qty">Quantity:</label>
-            <input type="number" name="qty" id="qty" required>
+                    <label for="qty">Quantity:</label>
+                    <input type="number" name="qty" required>
 
+                </div>
+            </div>
+
+            <button type="button" id="add-item">Add Another Item</button>
             <button type="submit">Add Invoice</button>
         </form>
     </div>
+
 {% endblock body %}
