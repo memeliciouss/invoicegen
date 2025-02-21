@@ -1,0 +1,11 @@
+/* static/styles.css */
+
+@font-face {
+    font-family: 'Cormorant';
+    src: url('/static/fonts/Cormorant-Regular.ttf');
+}
+
+/* Example usage */
+.font-cormorant{
+    font-family: 'Cormorant', serif;
+}

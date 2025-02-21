@@ -1,54 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-    {% block title %}{% endblock title %} | PaperPowers</title>
+    <title>{% block title %}{% endblock title %} | PaperPowers</title>
+    <style>
+        :root {
+          --bg-color: #1F2937;
+          --hover-bg-color: #374151;
+          --highlight-color: #111827;
+          --active-text-color: #FFFFFF;
+          --text-color: #9CA3AF;
+          --primary-accent: #615EFE;
+          --hover-accent: #8d8bfe  ;
+        }
+      </style>
+      
 </head>
-<body>
-    {% include 'navbar.html' %}
-    
-    {% block body %}
-        
-    {% endblock body %}
 
-    <!-- button to add item rows and delete rows -->
-    <script>
-        // Function to add a new row
-        document.getElementById('add-item').addEventListener('click', function() {
-            const container = document.getElementById('items-container');
-            const newRow = document.createElement('div');
-            newRow.classList.add('item-row');
-            newRow.innerHTML = `
-                <label for="itemName">Item Name:</label>
-                <input type="text" name="itemName" required>
+<body class="bg-[var(--color-secondary)]">
+    {% include 'header.html' %}
 
-                <label for="rate">Rate:</label>
-                <input type="number" name="rate" required>
+    <div class="grid grid-cols-12">
+        <div class="col-span-8 col-start-3">
+            {% block body %}
+            {% endblock body %}
+        </div>
+    </div>
 
-                <label for="gst">GST:</label>
-                <input type="number" name="gst" required>
+    {% load static %}
+    <script src="{% static 'scripts.js' %}"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 
-                <label for="qty">Quantity:</label>
-                <input type="number" name="qty" required>
-
-                <button type="button" class="delete-row">Delete</button>
-            `;
-            container.appendChild(newRow);
-
-            // Add event listener to the new delete button
-            newRow.querySelector('.delete-row').addEventListener('click', function() {
-                newRow.remove();
-            });
-        });
-
-        // Add event listeners to existing delete buttons (if any)
-        document.querySelectorAll('.delete-row').forEach(button => {
-            button.addEventListener('click', function() {
-                this.closest('.item-row').remove();
-            });
-        });
-    </script>
 </body>
+
 </html>
