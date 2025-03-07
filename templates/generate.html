@@ -64,28 +64,34 @@ Add New Invoice
                                 <input type="number" name="gst" class="w-full p-1 border rounded-md gst" required>
                             </td>
                             <td class="px-4 py-2 border amount">0.00</td>
-                            <td class="px-2 py-2 border">
-                                <button type="button" class="delete-row">
-                                    <img src="{% static 'remove.svg' %}" alt="Delete" class="h-5 w-5">
-                                </button>
+                            <td class="px-4 py-2 border" style="text-align: center;">
+                                <p>-</p>
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot> 
+                        <tr id="total-row">
+                            <td class="px-4 py-2 border font-bold text-right" colspan="4">Total</td>
+                            <td class="px-4 py-2 border amount-total"></td>
+                            <td></td> 
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
 
         <!-- Buttons -->
         <div class="mt-4 flex gap-4">
-            <button type="button" id="add-item" data-static-url="{% static 'remove.png' %}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            <button type="button" id="add-item" data-static-url="{% static 'remove.svg' %}"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                 Add Another Item
             </button>
-            
+
             <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                 Add Invoice
             </button>
         </div>
-        
+
     </form>
 </div>
 
