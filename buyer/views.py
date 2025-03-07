@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from buyer.models import Buyer
+from django.http import HttpResponse
 
 # Create your views here.
 def buyers(request):
@@ -21,3 +22,12 @@ def add(request):
 
         return redirect('/buyers')
     return render(request, 'addBuyer.html')
+
+def remove_buyer(request, buyer_id):
+
+
+    buyer=get_object_or_404(Buyer, buyerID=buyer_id)
+    if request.method == 'POST':
+        buyer.delete()
+        return redirect('buyers')
+    return redirect('buyers')

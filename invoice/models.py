@@ -6,7 +6,6 @@ class Invoice(models.Model):
     invID=models.AutoField(primary_key=True)
     buyerID=models.ForeignKey(Buyer,on_delete=models.SET_NULL, null=True)
     
-
     def __str__(self):
         return str(self.invID)
     

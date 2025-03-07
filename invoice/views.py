@@ -46,3 +46,4 @@ def list(request):
         'invoices':Invoice.objects.all()
     }
     return render(request,'invoices.html',context)
+
