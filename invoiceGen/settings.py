@@ -32,8 +32,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'buyer.apps.BuyerConfig',
-    'invoice.apps.InvoiceConfig',
+    'buyer.apps.BuyerConfig', #added manually
+    'invoice.apps.InvoiceConfig', #added manually
+    'dashboard.apps.DashboardConfig', #added manually
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'invoiceGen.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,"templates")],
+        'DIRS': [os.path.join(BASE_DIR,"templates")], #added manually
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,7 +124,7 @@ STATIC_URL = '/static/'
 
 #added manually
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static'), #added manually
 ]
 
 # Default primary key field type
