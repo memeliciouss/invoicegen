@@ -32,10 +32,10 @@ Invoices List
                 {% for invoice in invoices %}
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        {{ invoice.invID }}
+                        {{ invoice.inv_id }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        {{ invoice.buyerID.name }}
+                        {{ invoice.buyer_id.name }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         {{ invoice.date }}
@@ -44,12 +44,12 @@ Invoices List
                         {{ invoice.total|floatformat:"2" }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <button onclick="window.location.href='/inv/{{ invoice.invID }}'"
+                        <button onclick="window.location.href='/inv/{{ invoice.inv_id }}'"
                                 class="inline-flex items-center px-4 py-2 border border-gray-400 rounded-md text-sm font-medium text-gray-700 hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">
                             <img src="{% static 'eye.svg' %}" alt="View" class="h-5 w-5 mr-2" />
                             View
                         </button>
-                        <button onclick=" return confirmDeleteInvoice({{ invoice.invID|escapejs }})" class="inline-flex items-center px-2 py-1  text-xs font-medium text-red-700 ml-2">
+                        <button onclick=" return confirmDeleteInvoice({{ invoice.inv_id|escapejs }})" class="inline-flex items-center px-2 py-1  text-xs font-medium text-red-700 ml-2">
                             <img src="{% static 'remove.svg' %}" alt="Remove" class="h-4 w-4 mr-1" />
                         </button>
                     </td>

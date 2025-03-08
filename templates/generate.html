@@ -12,17 +12,15 @@ Add New Invoice
         {% csrf_token %}
         {% load static %}
 
-        <!-- Select Buyer -->
         <div>
             <label for="buyerID" class="block text-sm font-medium">Select Buyer:</label>
             <select name="buyerID" id="buyerID" class="w-full max-w-xs p-2 border rounded-md">
                 {% for buyer in buyers %}
-                <option value="{{ buyer.buyerID }}">{{ buyer.buyerID }}</option>
+                <option value="{{ buyer.buyer_id }}">{{ buyer.buyer_id }}</option>
                 {% endfor %}
             </select>
         </div>
 
-        <!-- Invoice No. and Date -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
                 <label for="invoiceNo" class="block text-sm font-medium">Invoice No.:</label>
@@ -34,7 +32,6 @@ Add New Invoice
             </div>
         </div>
 
-        <!--Items Table-->
         <div class="mt-6">
             <h3 class="text-md font-semibold mb-3">Invoice Items</h3>
             <div class="overflow-x-auto">
@@ -52,16 +49,16 @@ Add New Invoice
                     <tbody id="invoice-body">
                         <tr>
                             <td class="px-4 py-2 border">
-                                <input type="text" name="itemName" class="w-full p-1 border rounded-md" required>
+                                <input type="text" name="itemName" class="w-full p-1 border rounded-md" placeholder="Item Name" required>
                             </td>
                             <td class="px-4 py-2 border">
-                                <input type="number" name="qty" class="w-full p-1 border rounded-md qty" required>
+                                <input type="number" name="qty" class="w-full p-1 border rounded-md qty" value="1" required>
                             </td>
                             <td class="px-4 py-2 border">
-                                <input type="number" name="rate" class="w-full p-1 border rounded-md rate" required>
+                                <input type="number" step="0.01" name="rate" class="w-full p-1 border rounded-md rate" required>
                             </td>
                             <td class="px-4 py-2 border">
-                                <input type="number" name="gst" class="w-full p-1 border rounded-md gst" required>
+                                <input type="number" step="0.01" name="gst" class="w-full p-1 border rounded-md gst" value="18" required>
                             </td>
                             <td class="px-4 py-2 border amount">0.00</td>
                             <td class="px-4 py-2 border" style="text-align: center;">
@@ -69,22 +66,24 @@ Add New Invoice
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot> 
+                    <tfoot>
                         <tr id="total-row">
                             <td class="px-4 py-2 border font-bold text-right" colspan="4">Total</td>
                             <td class="px-4 py-2 border amount-total"></td>
-                            <td></td> 
+                            <td></td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
 
-        <!-- Buttons -->
         <div class="mt-4 flex gap-4">
             <button type="button" id="add-item" data-static-url="{% static 'remove.svg' %}"
-                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                Add Another Item
+                    class="inline-flex items-center px-4 py-2 border border-gray-400 rounded-md text-gray-700 hover:bg-gray-100 hover:text-[var(--primary-accent)]">
+                <svg class="size-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Add new Item
             </button>
 
             <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">

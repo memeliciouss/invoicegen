@@ -61,10 +61,10 @@ document.addEventListener('DOMContentLoaded', function () {
     addItemButton.addEventListener('click', function () {
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
-            <td class="px-4 py-2 border"><input type="text" name="itemName" class="w-full p-1 border rounded-md" required></td>
-            <td class="px-4 py-2 border"><input type="number" name="qty" class="w-full p-1 border rounded-md qty" required></td>
+            <td class="px-4 py-2 border"><input type="text" name="itemName" class="w-full p-1 border rounded-md" placeholder="Item Name" required></td>
+            <td class="px-4 py-2 border"><input type="number" name="qty" class="w-full p-1 border rounded-md qty" value="1" required></td>
             <td class="px-4 py-2 border"><input type="number" name="rate" class="w-full p-1 border rounded-md rate" required></td>
-            <td class="px-4 py-2 border"><input type="number" name="gst" class="w-full p-1 border rounded-md gst" required></td>
+            <td class="px-4 py-2 border"><input type="number" name="gst" class="w-full p-1 border rounded-md gst" value="18" required></td>
             <td class="px-4 py-2 border amount">0.00</td>
             <td class="px-4 py-2 border" style="text-align: center;"><button type="button" class="delete-row"><img src="${staticUrl}" alt="Delete" class="h-5 w-5"></button></td>
         `;

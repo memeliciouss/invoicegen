@@ -17,16 +17,16 @@ def add(request):
         state = request.POST.get('state')
         pin = request.POST.get('pin')
         gst = request.POST.get('gst')
-        newBuyer=Buyer(name=name, adr=adr, state=state, pin=pin, gst=gst)
-        newBuyer.save()
+        new_buyer=Buyer(name=name, adr=adr, state=state, pin=pin, gst=gst)
+        new_buyer.save()
 
         return redirect('/buyers')
     return render(request, 'addBuyer.html')
 
-def remove_buyer(request, buyer_id):
+def remove_buyer(request, buyerID):
 
 
-    buyer=get_object_or_404(Buyer, buyerID=buyer_id)
+    buyer=get_object_or_404(Buyer, buyer_id=buyerID)
     if request.method == 'POST':
         buyer.delete()
         return redirect('buyers')
