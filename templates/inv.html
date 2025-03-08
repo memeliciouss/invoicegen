@@ -17,5 +17,8 @@
             <li>BuyerID: {{ invoice.buyerID.buyerID }}</li>
             <li>Buyer Name: {{ invoice.buyerID.name }}</li>
         </ul>
+        <ul>
+            <li>Total: {{ invoice.total|floatformat:"2" }}</li>
+        </ul>
     </div>
 {% endblock body %}

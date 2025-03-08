@@ -5,6 +5,7 @@ from buyer.models import Buyer
 class Invoice(models.Model):
     invID=models.AutoField(primary_key=True)
     buyerID=models.ForeignKey(Buyer,on_delete=models.SET_NULL, null=True)
+    date=models.DateField()
     
     def __str__(self):
         return str(self.invID)

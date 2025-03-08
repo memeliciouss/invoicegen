@@ -1,17 +1,20 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from invoice.models import Invoice, Items
 from buyer.models import Buyer
+from invoice.utils import calculate_invoice_total
 
 # Create your views here.
 
 def generate(request):
     if request.method == "POST":
+
         #get buyer info
         buyer_id=request.POST.get('buyerID')
         buyer_instance=Buyer.objects.get(buyerID=buyer_id)
 
         #create new invoice
-        newInv=Invoice(buyerID=buyer_instance)
+        date=request.POST.get('invoiceDate')
+        newInv=Invoice(buyerID=buyer_instance,date=date)
         newInv.save()
 
         #fetch item details
@@ -33,6 +36,7 @@ def generate(request):
 def inv(request, invID):
     # invoice_instance=invoice.objects.get(invID=invID)
     invoice_instance=get_object_or_404(Invoice,invID=invID)
+    invoice_instance.total=calculate_invoice_total(invID)
     context={
         'invoice':invoice_instance,
         'items':Items.objects.filter(invID=invoice_instance)
@@ -42,8 +46,17 @@ def inv(request, invID):
     return render(request, 'inv.html', context)
 
 def list(request):
+    invoices=Invoice.objects.all()
+    for invoice in invoices:
+        invoice.total=calculate_invoice_total(invoice.invID)
     context={
-        'invoices':Invoice.objects.all()
+        'invoices':invoices,
     }
     return render(request,'invoices.html',context)
 
+def remove(request, invoice_id):
+    invoice=get_object_or_404(Invoice, invID=invoice_id)
+    if request.method == 'POST':
+        invoice.delete()
+        return HttpResponse("otw to delete correctly")
+    return HttpResponse('otw to delete but off')

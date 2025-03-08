@@ -1,37 +1,77 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
-    Invoices List
+Invoices List
 {% endblock title %}
 
 {% block body %}
-    <div class="max-w-4xl mx-auto p-6 bg-white rounded-md shadow-md">
-        <h2 class="text-2xl font-semibold mb-4">Invoices List</h2>
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Invoice ID
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Buyer
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    {% for invoice in invoices %}
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                {{ invoice.invID }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                {{ invoice.buyerID.name }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+<div class="max-w-4xl mx-auto p-6 bg-white rounded-md shadow-md">
+    <h2 class="text-2xl font-semibold mb-4">Invoices List</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Invoice ID
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Buyer
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Dated
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Total Amount
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for invoice in invoices %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {{ invoice.invID }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {{ invoice.buyerID.name }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {{ invoice.date }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {{ invoice.total|floatformat:"2" }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <button onclick="window.location.href='/inv/{{ invoice.invID }}'"
+                                class="inline-flex items-center px-4 py-2 border border-gray-400 rounded-md text-sm font-medium text-gray-700 hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                            <img src="{% static 'eye.svg' %}" alt="View" class="h-5 w-5 mr-2" />
+                            View
+                        </button>
+                        <button onclick=" return confirmDeleteInvoice({{ invoice.invID|escapejs }})" class="inline-flex items-center px-2 py-1  text-xs font-medium text-red-700 ml-2">
+                            <img src="{% static 'remove.svg' %}" alt="Remove" class="h-4 w-4 mr-1" />
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
+<form id="deleteForm" method="post" style="display: none;">
+    {% csrf_token %}
+</form>
+<script>
+    function confirmDeleteInvoice(invoice_id) {
+        if (confirm("Are you sure you want to delete this invoice?")) {
+            let form = document.getElementById('deleteForm');
+            form.action = "remove/" + invoice_id;
+            form.submit();
+            return false;
+        } else {
+            return false;
+        }
+    }
+</script>
 {% endblock body %}
