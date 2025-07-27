@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}
+    Buyers List
+{% endblock %}
+
+{% block body %}
+List of all buyers
+
+<a href="/buyers/add" >
+    Add new buyer
+</a>
+    {% for buyer in buyers %}
+        {{buyer.name}}
+    {% endfor %}
+{% endblock %}
