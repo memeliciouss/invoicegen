@@ -19,6 +19,9 @@ def generate(request):
             itemFormSet.instance = newInvoice
             itemFormSet.save()
 
+            newInvoice.calculate_totals()
+            newInvoice.save(update_fields=['subTotal', 'gstTotal', 'grandTotal'])
+
             return redirect('/inv/list')
     else:
         invoiceForm = newInvoiceForm()
