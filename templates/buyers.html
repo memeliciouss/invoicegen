@@ -1,15 +1,21 @@
-{% extends 'base.html' %}
-{% block title %}
-    Buyers List
-{% endblock %}
+{% extends 'base.html' %} {% block title %} Buyers List {% endblock %} 
+{% block body %} List of all buyers
 
-{% block body %}
-List of all buyers
-
-<a href="/buyers/add" >
-    Add new buyer
-</a>
-    {% for buyer in buyers %}
-        {{buyer.name}}
-    {% endfor %}
+<a href="/buyers/add"> Add new buyer </a>
+<div>
+  {% if buyers %} {% for buyer in buyers %}
+  <div>
+      {{forloop.counter}}
+      {{buyer.name}}
+      <form method="post" action="remove/{{buyer.buyerId}}">
+        {% csrf_token %}
+        <button type  ="submit">Delete</button>
+      </form>
+    
+  </div>
+  {% endfor %} 
+  {% else %}
+   No buyers 
+   {% endif %}
+</div>
 {% endblock %}

@@ -1,9 +1,24 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
+{% block title %} Invoice # {% endblock %} 
+{% block body %} 
+Invoice View
 
-{% block title %}
-    Invoice #
-{% endblock %}
+<form method = 'post' action="drop/{{invoice.invId}}">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+</form>
 
-{% block body %}
-    Invoice View
+<p>{{invoice.invId}}</p>
+<p>{{invoice.invNum}}</p>
+<p>{{invoice.date}}</p>
+<p>{{invoice.buyerId.name}}</p>
+
+{% for item in items %}
+<div>
+    {{item.itemName}}
+    {{item.rate}}
+    {{item.gst}}
+    {{item.qty}}
+</div>
+{% endfor %}
 {% endblock %}

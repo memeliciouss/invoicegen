@@ -5,5 +5,198 @@
 {% endblock %}
 
 {% block body %}
-    Generate new Invoice
+    <h1>Generate new Invoice</h1>
+    <form method="post" id="invoice-form"> {# Added an ID to the form for easier selection #}
+        {% csrf_token %}
+
+        <h2>Invoice Details</h2>
+        {{ invoiceForm.as_p }}
+
+        {# Display invoiceForm's non-field errors #}
+        {% if invoiceForm.non_field_errors %}
+            <ul>
+                {% for error in invoiceForm.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {# Display invoiceForm's field-specific errors #}
+        {% for field in invoiceForm %}
+            {% if field.errors %}
+                <ul>
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+
+
+        <h2>Invoice Items</h2>
+        {# CRITICAL: This renders hidden fields required by the formset #}
+        {{ itemFormSet.management_form }}
+
+        {# Display formset-level non-field errors #}
+        {% if itemFormSet.non_form_errors %}
+            <ul>
+                {% for error in itemFormSet.non_form_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <table id="item-table"> {# Added an ID to the table for easier selection #}
+            <thead>
+                <tr>
+                    <th>
+                        {{ itemFormSet.empty_form.itemName.label }}
+                    </th>
+                    <th>
+                        {{ itemFormSet.empty_form.rate.label }}
+                    </th>
+                    <th>
+                        {{ itemFormSet.empty_form.gst.label }}
+                    </th>
+                    <th>
+                        {{ itemFormSet.empty_form.qty.label }}
+                    </th>
+                    <th>Action</th> {# New column for the remove button #}
+                </tr>
+            </thead>
+            <tbody>
+                {% for itemForm in itemFormSet %}
+                    <tr class="item-row"> {# Added class for easier selection #}
+                        <td>
+                            {{ itemForm.itemName }}
+                        </td>
+                        <td>
+                            {{ itemForm.rate }}
+                        </td>
+                        <td>
+                            {{ itemForm.gst }}
+                        </td>
+                        <td>
+                            {{ itemForm.qty }}
+                        </td>
+                        <td>
+                            <button type="button" class="remove-row-button">Remove</button> {# Remove button #}
+                        </td>
+                    </tr>
+                    {# Display errors for the current individual item form #}
+                    {% if itemForm.errors %}
+                        <tr>
+                            <td colspan="5"> {# Changed colspan to 5 due to new 'Action' column #}
+                                <ul>
+                                    {% for field_name, errors in itemForm.errors.items %}
+                                        <li><strong>{{ field_name }}:</strong>
+                                            {% for error in errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </li>
+                                    {% endfor %}
+                                    {% if itemForm.non_field_errors %}
+                                        {% for error in itemForm.non_field_errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                {# This hidden row will serve as our template for new rows #}
+                <tr id="empty-form-template" style="display: none;">
+                    <td>{{ itemFormSet.empty_form.itemName }}</td>
+                    <td>{{ itemFormSet.empty_form.rate }}</td>
+                    <td>{{ itemFormSet.empty_form.gst }}</td>
+                    <td>{{ itemFormSet.empty_form.qty }}</td>
+                    <td><button type="button" class="remove-row-button">Remove</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button type="button" id="add-item-button">Add new Item</button> {# Changed type to button and added ID #}
+        <button type="submit">Generate</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addItemButton = document.getElementById('add-item-button');
+            const itemTableBody = document.querySelector('#item-table tbody');
+            const emptyFormTemplate = document.getElementById('empty-form-template');
+            const totalFormsInput = document.querySelector('input[name$="TOTAL_FORMS"]');
+
+            function updateElementIndex(element, prefix, index) {
+                const nameRegex = new RegExp(`(${prefix}-(\\d+)-)`);
+                element.name = element.name.replace(nameRegex, `${prefix}-${index}-`);
+                element.id = element.id.replace(nameRegex, `${prefix}-${index}-`);
+                if (element.labels) {
+                    for (const label of element.labels) {
+                        label.htmlFor = label.htmlFor.replace(nameRegex, `${prefix}-${index}-`);
+                    }
+                }
+            }
+
+            function addRemoveButtonListener(button) {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr.item-row');
+                    if (row) {
+                        row.remove();
+                        // Update TOTAL_FORMS and re-index forms
+                        let totalForms = parseInt(totalFormsInput.value);
+                        totalForms--;
+                        totalFormsInput.value = totalForms;
+                        reindexRows();
+                    }
+                });
+            }
+
+            function reindexRows() {
+                const rows = itemTableBody.querySelectorAll('tr.item-row');
+                rows.forEach((row, index) => {
+                    row.querySelectorAll('[name]').forEach(input => {
+                        const name = input.name;
+                        const prefix = name.split('-')[0]; // e.g., 'item' from 'item-0-itemName'
+                        updateElementIndex(input, prefix, index);
+                    });
+                });
+            }
+
+            // Add listener to existing remove buttons (for initially rendered forms)
+            document.querySelectorAll('.remove-row-button').forEach(button => {
+                addRemoveButtonListener(button);
+            });
+
+            addItemButton.addEventListener('click', function() {
+                const newRow = emptyFormTemplate.cloneNode(true);
+                newRow.removeAttribute('id');
+                newRow.style.display = ''; // Make the row visible
+                newRow.classList.add('item-row'); // Add the item-row class
+
+                // Get the current number of forms
+                let totalForms = parseInt(totalFormsInput.value);
+
+                // Update names and IDs for the new row's inputs to match the next index
+                newRow.querySelectorAll('[name]').forEach(input => {
+                    const name = input.name;
+                    const prefix = name.split('-')[0]; // e.g., 'item' from 'item-__prefix__-itemName'
+                    updateElementIndex(input, prefix, totalForms);
+                });
+
+                // Add the remove button listener to the new row's button
+                const newRemoveButton = newRow.querySelector('.remove-row-button');
+                if (newRemoveButton) {
+                    addRemoveButtonListener(newRemoveButton);
+                }
+
+                // Append the new row before the empty form template
+                itemTableBody.insertBefore(newRow, emptyFormTemplate);
+
+                // Increment the TOTAL_FORMS count
+                totalForms++;
+                totalFormsInput.value = totalForms;
+            });
+        });
+    </script>
 {% endblock %}

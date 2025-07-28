@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from buyer.models import buyer
 from buyer.forms import newBuyerForm
+
 # Create your views here.
 def buyers(request):
     context = {
@@ -9,12 +10,18 @@ def buyers(request):
     return render(request, 'buyers.html', context)
 
 def add(request):
-    form = newBuyerForm()
+    if request.method=='POST':
+        newBuyer = newBuyerForm(request.POST)
+        if newBuyer.is_valid():
+            newBuyer.save()
+            return redirect('/buyers')
+    else:
+        form = newBuyerForm()
     return render(request, 'addBuyer.html',{'form':form})
 
 
-def drop(request, buyerId):
-    buyerInst = get_object_or_404(buyer, buyerId = buyerId)
+def drop(request, pk):
+    buyerInst = get_object_or_404(buyer, buyerId = pk)
 
     if request.method == "POST":
         buyerInst.delete()

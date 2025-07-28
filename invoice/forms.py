@@ -3,8 +3,7 @@ from django.forms import inlineformset_factory
 from buyer.models import buyer
 from invoice.models import Invoice, Items
 
-class newInvoieceForm(forms.ModelForm):
-
+class newInvoiceForm(forms.ModelForm):
     buyer  = forms.ModelChoiceField(
         queryset=buyer.objects.all().order_by('name'),
         label='Select a buyer',
@@ -27,6 +26,13 @@ class ItemForm(forms.ModelForm):
     class Meta:
         model = Items
         fields = ['itemName', 'rate', 'gst', 'qty']
+        labels = {
+            'itemName':'Item Name',
+            'rate':'Rate',
+            'gst': 'GST %',
+            'qty':'Quantity'
+        
+        }
         
 
 ItemFormSet = inlineformset_factory(

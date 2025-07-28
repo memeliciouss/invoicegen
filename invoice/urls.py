@@ -4,7 +4,7 @@ from invoice import views
 
 urlpatterns = [
     path('generate',views.generate, name='generateInvoice'),
-    path('<int:invId>', views.invoiceView, name='invoice'),
-    path('drop/<int:invId>',views.drop, name='dropInvoice'),
+    path('<int:pk>', views.invoiceView, name='invoice'),
+    path('drop/<int:pk>',views.drop, name='dropInvoice'),
     path('list',views.invoiceList, name='InvoiceList'),
 ]

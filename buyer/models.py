@@ -7,8 +7,8 @@ class buyer(models.Model):
     adr1 = models.CharField(max_length=128)
     adr2 = models.CharField(max_length=128, null=True)
     state = models.CharField(max_length=32)
-    pin = models.IntegerField()
+    pin = models.CharField(max_length=10)
     gstin = models.CharField(max_length=15)
 
     def __str__(self):
-        return str(self.name) + f"({self.name})"
+        return str(self.name) + f" ({self.buyerId})"

@@ -1,14 +1,51 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.db import transaction
+from .forms import newInvoiceForm, ItemFormSet
+from .models import Invoice
 
 # Create your views here.
+@transaction.atomic
 def generate(request):
-    return render(request, 'generateInvoice.html')
+    if request.method=='POST':
+        invoiceForm = newInvoiceForm(request.POST)
+        itemFormSet = ItemFormSet(request.POST, prefix='items')
+        if invoiceForm.is_valid() and itemFormSet.is_valid():
+            newInvoice = invoiceForm.save(commit=False)
 
-def invoiceView(request):
-    return render(request, 'invoice.html')
+            newInvoice.buyerId = invoiceForm.cleaned_data['buyer']
+
+            newInvoice.save()
+
+            itemFormSet.instance = newInvoice
+            itemFormSet.save()
+
+            return redirect('/inv/list')
+    else:
+        invoiceForm = newInvoiceForm()
+        itemFormSet = ItemFormSet(prefix='items')
+    context = {
+        'invoiceForm': invoiceForm,
+        'itemFormSet': itemFormSet
+    }
+    return render(request, 'generateInvoice.html', context)
+
+def invoiceView(request, pk):
+    invoiceInst = Invoice.objects.select_related('buyerId').get(invId = pk)
+    context = {
+        'invoice':invoiceInst,
+        'items': invoiceInst.items_set.all()
+    }
+    return render(request, 'invoice.html',context)
 
 def invoiceList(request):
-    return render(request, 'invoiceList.html')
+    context={
+        'invoices':Invoice.objects.all().select_related('buyerId')
+    }
+    return render(request, 'invoiceList.html', context)
 
-def drop(request):
-    return redirect('/list')
+def drop(request, pk):
+    invoiceInst = get_object_or_404(Invoice, invId = pk)
+    if request.method == 'POST':
+        invoiceInst.delete()
+        return redirect('/inv/list')
+    return redirect('/inv/list')

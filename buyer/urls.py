@@ -5,5 +5,5 @@ from buyer import views
 urlpatterns = [
     path('',views.buyers, name='buyers'),
     path('add', views.add, name='addBuyer'),
-    path('remove/<int:buyerId>',views.drop, name='dropBuyer')
+    path('remove/<int:pk>',views.drop, name='dropBuyer')
 ]
