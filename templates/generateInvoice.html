@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
     New Invoice
 {% endblock %}
@@ -119,84 +119,9 @@
         <button type="button" id="add-item-button">Add new Item</button> {# Changed type to button and added ID #}
         <button type="submit">Generate</button>
     </form>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const addItemButton = document.getElementById('add-item-button');
-            const itemTableBody = document.querySelector('#item-table tbody');
-            const emptyFormTemplate = document.getElementById('empty-form-template');
-            const totalFormsInput = document.querySelector('input[name$="TOTAL_FORMS"]');
-
-            function updateElementIndex(element, prefix, index) {
-                const nameRegex = new RegExp(`(${prefix}-(\\d+)-)`);
-                element.name = element.name.replace(nameRegex, `${prefix}-${index}-`);
-                element.id = element.id.replace(nameRegex, `${prefix}-${index}-`);
-                if (element.labels) {
-                    for (const label of element.labels) {
-                        label.htmlFor = label.htmlFor.replace(nameRegex, `${prefix}-${index}-`);
-                    }
-                }
-            }
-
-            function addRemoveButtonListener(button) {
-                button.addEventListener('click', function() {
-                    const row = this.closest('tr.item-row');
-                    if (row) {
-                        row.remove();
-                        // Update TOTAL_FORMS and re-index forms
-                        let totalForms = parseInt(totalFormsInput.value);
-                        totalForms--;
-                        totalFormsInput.value = totalForms;
-                        reindexRows();
-                    }
-                });
-            }
-
-            function reindexRows() {
-                const rows = itemTableBody.querySelectorAll('tr.item-row');
-                rows.forEach((row, index) => {
-                    row.querySelectorAll('[name]').forEach(input => {
-                        const name = input.name;
-                        const prefix = name.split('-')[0]; // e.g., 'item' from 'item-0-itemName'
-                        updateElementIndex(input, prefix, index);
-                    });
-                });
-            }
-
-            // Add listener to existing remove buttons (for initially rendered forms)
-            document.querySelectorAll('.remove-row-button').forEach(button => {
-                addRemoveButtonListener(button);
-            });
-
-            addItemButton.addEventListener('click', function() {
-                const newRow = emptyFormTemplate.cloneNode(true);
-                newRow.removeAttribute('id');
-                newRow.style.display = ''; // Make the row visible
-                newRow.classList.add('item-row'); // Add the item-row class
-
-                // Get the current number of forms
-                let totalForms = parseInt(totalFormsInput.value);
-
-                // Update names and IDs for the new row's inputs to match the next index
-                newRow.querySelectorAll('[name]').forEach(input => {
-                    const name = input.name;
-                    const prefix = name.split('-')[0]; // e.g., 'item' from 'item-__prefix__-itemName'
-                    updateElementIndex(input, prefix, totalForms);
-                });
-
-                // Add the remove button listener to the new row's button
-                const newRemoveButton = newRow.querySelector('.remove-row-button');
-                if (newRemoveButton) {
-                    addRemoveButtonListener(newRemoveButton);
-                }
-
-                // Append the new row before the empty form template
-                itemTableBody.insertBefore(newRow, emptyFormTemplate);
-
-                // Increment the TOTAL_FORMS count
-                totalForms++;
-                totalFormsInput.value = totalForms;
-            });
-        });
-    </script>
+<script>
+    const FORMSET_PREFIX = "{{ itemFormSet.prefix }}";
+    const IS_EDIT_PAGE = false;
+</script>
+<script src="{% static 'script.js' %}" defer></script>
 {% endblock %}

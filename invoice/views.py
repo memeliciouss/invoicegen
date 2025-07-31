@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
-from .forms import newInvoiceForm, ItemFormSet
+from .forms import newInvoiceForm, ItemFormSet, editInvoiceForm, ItemEditFormSet
 from .models import Invoice
 
 # Create your views here.
@@ -10,11 +10,8 @@ def generate(request):
         invoiceForm = newInvoiceForm(request.POST)
         itemFormSet = ItemFormSet(request.POST, prefix='items')
         if invoiceForm.is_valid() and itemFormSet.is_valid():
-            newInvoice = invoiceForm.save(commit=False)
+            newInvoice = invoiceForm.save()
 
-            newInvoice.buyerId = invoiceForm.cleaned_data['buyer']
-
-            newInvoice.save()
 
             itemFormSet.instance = newInvoice
             itemFormSet.save()
@@ -31,6 +28,30 @@ def generate(request):
         'itemFormSet': itemFormSet
     }
     return render(request, 'generateInvoice.html', context)
+
+@transaction.atomic
+def edit(request, pk):
+    invoiceInst = get_object_or_404(Invoice, invId = pk)
+    if request.method=='POST':
+        invoiceForm = editInvoiceForm(request.POST, instance = invoiceInst)
+        itemFormSet = ItemEditFormSet(request.POST, instance = invoiceInst, prefix='items')
+        if invoiceForm.is_valid() and itemFormSet.is_valid():
+            invoiceForm.save()
+            itemFormSet.save()
+
+            invoiceInst.calculate_totals()
+            invoiceInst.save(update_fields=['subTotal', 'gstTotal', 'grandTotal'])
+
+            return redirect('/inv/list')
+    else:
+        invoiceForm = editInvoiceForm(instance=invoiceInst)
+        itemFormSet = ItemEditFormSet(instance=invoiceInst,prefix='items')
+    context = {
+        'invoiceForm': invoiceForm,
+        'itemFormSet': itemFormSet,
+        'invoiceInst':invoiceInst
+    }
+    return render(request, 'editInvoice.html', context)
 
 def invoiceView(request, pk):
     invoiceInst = Invoice.objects.select_related('buyerId').get(invId = pk)

@@ -1,5 +1,5 @@
 {% extends 'base.html' %} 
-{% block title %} Invoice # {% endblock %} 
+{% block title %} Invoice {{ invoice.invNum}} {% endblock %} 
 {% block body %} 
 Invoice View
 
@@ -7,6 +7,12 @@ Invoice View
     {% csrf_token %}
     <button type="submit">Delete</button>
 </form>
+
+<!-- here, url is Django's built in template tag for dynamically generating URLs -->
+ <!--editInvoice is the name i gave to edit url pattern in urls.py  -->
+<a href="{% url 'editInvoice' pk=invoice.invId %}">
+                    <button type="button">Edit</button>
+                </a>
 
 <p>{{invoice.invId}}</p>
 <p>{{invoice.invNum}}</p>

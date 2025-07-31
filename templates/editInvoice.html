@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Edit Invoice {{ invoiceInst.invNum }}
+{% endblock %}
+
+{% block body %}
+<form method="post">
+{% csrf_token %}
+
+Buyer: {{ invoiceInst.buyerId.name|default:"N/A" }}
+
+{{ invoiceForm.as_p }}
+{{ itemFormSet.management_form }}
+        <p style="color:red;">{{ itemFormSet.non_form_errors }}</p>
+
+<table id="item-table">
+<thead>
+<tr>
+<th>Item Name</th>
+<th>Rate</th>
+<th>GST %</th>
+<th>Quantity</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+    {% for itemForm in itemFormSet %}
+    <tr class="item-row">
+        <td>{{ itemForm.itemName }}{{ itemForm.id }}</td>
+        <td>{{ itemForm.rate }}</td>
+        <td>{{ itemForm.gst }}</td>
+        <td>{{ itemForm.qty }}</td>
+        <td>
+            {% if itemForm.instance.pk %}
+            {{ itemForm.DELETE }}
+            <button type="button" class="remove-row-button">Remove</button>
+            {% else %}
+             <button type="button" class="remove-row-button">Remove</button>
+             {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        <tr id="empty-form-template" style="display: none;">
+            <td>{{ itemFormSet.empty_form.itemName }}</td>
+            <td>{{ itemFormSet.empty_form.rate }}</td>
+            <td>{{ itemFormSet.empty_form.gst }}</td>
+            <td>{{ itemFormSet.empty_form.qty }}</td>
+            <td><button type="button" class="remove-row-button">Remove</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<button type="button" id="add-item-button">Add new Item</button>
+<button type="submit">Update Invoice</button>
+</form>
+Subtotal: <span id="subtotal-display">{{ invoiceInst.subTotal|default:"0.00" }}</span>
+Total GST: <span id="gst-total-display">{{ invoiceInst.gstTotal|default:"0.00" }}</span>
+Grand Total: <span id="grand-total-display">{{ invoiceInst.grandTotal|default:"0.00" }}</span>
+
+
+{% if invoiceForm.errors or itemFormSet.errors or itemFormSet.non_form_errors %}
+        <div style="color: red; margin-top: 20px; border: 1px solid red; padding: 10px;">
+            <p>Please correct the following errors:</p>
+            <ul>
+                {# Main Invoice Form Errors #}
+                {% for field, errors in invoiceForm.errors.items %}
+                    {% for error in errors %}
+                        <li>Invoice: {{ field|title }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+
+                {# Formset-level Errors #}
+                {% for error in itemFormSet.non_form_errors %}
+                    <li>Item List: {{ error }}</li>
+                {% endfor %}
+
+                {# Individual Item Form Errors #}
+                {% for itemForm in itemFormSet %}
+                    {% if itemForm.errors %}
+                        {% for field_name, errors in itemForm.errors.items %}
+                            {% for error in errors %}
+                                <li>Item {{ forloop.parentloop.counter }}: {{ field_name|title }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <script>
+    const FORMSET_PREFIX = "{{ itemFormSet.prefix }}";
+    const IS_EDIT_PAGE = true;
+</script>
+<script src="{% static 'script.js' %}" defer></script>
+{% endblock %}
