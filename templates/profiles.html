@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Profiles
+{% endblock %}
+
+{% block body %}
+    {% for profile in profiles %}
+        {{profile.name}}
+        {{profile.email}}
+        <button onclick="window.location.href='edit/{{ profile.userId }}'">Edit</button>
+
+    {% endfor %}
+{% endblock %}

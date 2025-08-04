@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
-class UserProfile(models.Model):
+class Profile(models.Model):
+    userId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128)
     adr1 = models.CharField(max_length=128)
     adr2 = models.CharField(max_length=128)
