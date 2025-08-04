@@ -1,1 +1,9 @@
+# ignore the db, it can be generated again by applying migrations
 db.sqlite3
+
+# python cache files
+__pycache__/
+*.pyc
+
+# cache inside migration files
+**/migrations/__pycache__/
