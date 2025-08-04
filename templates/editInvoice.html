@@ -7,12 +7,20 @@ Edit Invoice {{ invoiceInst.invNum }}
 {% block body %}
 <form method="post">
 {% csrf_token %}
-
-Buyer: {{ invoiceInst.buyerId.name|default:"N/A" }}
+<p>
+    User: {{ invoiceInst.userId.name}}
+</p>
+<p>
+    Buyer: {{ invoiceInst.buyerId.name|default:"N/A" }}
+</p>
 
 {{ invoiceForm.as_p }}
+
+<!-- to render hidden form fields -->
+ <!-- crucial when using FormSet like formset_factory -->
 {{ itemFormSet.management_form }}
-        <p style="color:red;">{{ itemFormSet.non_form_errors }}</p>
+
+<p style="color:red;">{{ itemFormSet.non_form_errors }}</p>
 
 <table id="item-table">
 <thead>

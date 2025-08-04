@@ -1,10 +1,13 @@
 from django.db import models
 from buyer.models import buyer
+from user_profile.models import Profile
+
 # Create your models here.
 class Invoice(models.Model):
     invId= models.AutoField(primary_key=True)
     invNum = models.CharField(max_length=32)
     buyerId = models.ForeignKey(buyer, on_delete=models.SET_NULL, null=True, blank=True)
+    userId = models.ForeignKey(Profile, on_delete = models.SET_NULL, null=True, blank = True)
     # blank is form level
     # null is databse level
     # making it be null so that deletion can be handfled, but make sure to always pass a buyerId from frontend

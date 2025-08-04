@@ -3,9 +3,15 @@ from django.forms import inlineformset_factory
 from django.forms.widgets import HiddenInput
 from django.forms.models import BaseInlineFormSet
 from buyer.models import buyer
+from user_profile.models import Profile
 from invoice.models import Invoice, Items
 
 class newInvoiceForm(forms.ModelForm):
+    userId  = forms.ModelChoiceField(
+        queryset=Profile.objects.all().order_by('name'),
+        label='Select User',
+        empty_label='Select User')
+    
     buyerId  = forms.ModelChoiceField(
         queryset=buyer.objects.all().order_by('name'),
         label='Select a buyer',
@@ -14,7 +20,7 @@ class newInvoiceForm(forms.ModelForm):
     class Meta:
         model = Invoice
         
-        fields = ['buyerId', 'invNum', 'date']
+        fields = ['userId','buyerId', 'invNum', 'date']
 
         widgets = {
             'date': forms.DateInput(attrs={'type':'date'})
