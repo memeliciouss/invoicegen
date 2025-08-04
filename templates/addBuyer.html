@@ -5,10 +5,19 @@
 {% endblock %}
 
 {% block body %}
-    Add New Buyer
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+    <div class="form-card">
+        <h2 class="form-header">Add New Buyer</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn-primary" style="margin-top: 1rem;">
+                Submit
+            </button>
+        </form>
+    </div>
 {% endblock %}
