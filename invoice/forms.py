@@ -78,7 +78,7 @@ class editInvoiceForm(forms.ModelForm):
 
         labels = {
             'invNum': 'Invoice No.',
-            'date' : 'Dated'
+            'date' : 'Dated',
         }
 
     def __init__(self, *args, **kwargs):
@@ -86,5 +86,3 @@ class editInvoiceForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields['invNum'].widget.attrs['readonly'] = True
-        self.fields['date'].widget.attrs['readonly'] = True
-

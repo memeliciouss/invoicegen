@@ -1,127 +1,165 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}
     New Invoice
 {% endblock %}
 
 {% block body %}
-    <h1>Generate new Invoice</h1>
-    <form method="post" id="invoice-form"> {# Added an ID to the form for easier selection #}
-        {% csrf_token %}
+<div class="card">
+  <h2>Generate New Invoice</h2>
 
-        <h2>Invoice Details</h2>
-        {{ invoiceForm.as_p }}
+  <form method="post" id="invoice-form">
+    {% csrf_token %}
+
+    <div style="display: flex; gap: 2px; margin-bottom: 1rem;">
+      <div style="flex:1;">
+
+        <div class="form-field">
+          {{ invoiceForm.userId.label_tag }}
+          {{ invoiceForm.userId }}
+        </div>
+        
+        <div class="form-field">
+          {{ invoiceForm.buyerId.label_tag }}
+          {{ invoiceForm.buyerId }}
+        </div>
+
+        <div class="form-field">
+          {{ invoiceForm.invNum.label_tag }}
+          {{ invoiceForm.invNum }}
+        </div>
+
+        <div class="form-field">
+          {{ invoiceForm.date.label_tag }}
+          {{ invoiceForm.date }}
+        </div>
+        
+        
 
         {# Display invoiceForm's non-field errors #}
         {% if invoiceForm.non_field_errors %}
-            <ul>
-                {% for error in invoiceForm.non_field_errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
+          <div class="form-error-card">
+            {% for error in invoiceForm.non_field_errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
+          </div>
         {% endif %}
 
-        {# Display invoiceForm's field-specific errors #}
+        {# Field-level errors #}
         {% for field in invoiceForm %}
-            {% if field.errors %}
-                <ul>
-                    {% for error in field.errors %}
-                        <li>{{ field.label }}: {{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+          {% if field.errors %}
+            <div class="error">{{ field.label }}: {{ field.errors.0 }}</div>
+          {% endif %}
         {% endfor %}
+      </div>
+    </div>
 
+    <h3 style="margin-top: 1rem;">Invoice Items</h3>
 
-        <h2>Invoice Items</h2>
-        {# CRITICAL: This renders hidden fields required by the formset #}
-        {{ itemFormSet.management_form }}
+    {{ itemFormSet.management_form }}
 
-        {# Display formset-level non-field errors #}
-        {% if itemFormSet.non_form_errors %}
-            <ul>
-                {% for error in itemFormSet.non_form_errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    {% if itemFormSet.non_form_errors %}
+      <div class="form-error-card">
+        {% for error in itemFormSet.non_form_errors %}
+          <div class="error">{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
 
-        <table id="item-table"> {# Added an ID to the table for easier selection #}
-            <thead>
-                <tr>
-                    <th>
-                        {{ itemFormSet.empty_form.itemName.label }}
-                    </th>
-                    <th>
-                        {{ itemFormSet.empty_form.rate.label }}
-                    </th>
-                    <th>
-                        {{ itemFormSet.empty_form.gst.label }}
-                    </th>
-                    <th>
-                        {{ itemFormSet.empty_form.qty.label }}
-                    </th>
-                    <th>Action</th> {# New column for the remove button #}
-                </tr>
-            </thead>
-            <tbody>
-                {% for itemForm in itemFormSet %}
-                    <tr class="item-row"> {# Added class for easier selection #}
-                        <td>
-                            {{ itemForm.itemName }}
-                        </td>
-                        <td>
-                            {{ itemForm.rate }}
-                        </td>
-                        <td>
-                            {{ itemForm.gst }}
-                        </td>
-                        <td>
-                            {{ itemForm.qty }}
-                        </td>
-                        <td>
-                            <button type="button" class="remove-row-button">Remove</button> {# Remove button #}
-                        </td>
-                    </tr>
-                    {# Display errors for the current individual item form #}
-                    {% if itemForm.errors %}
-                        <tr>
-                            <td colspan="5"> {# Changed colspan to 5 due to new 'Action' column #}
-                                <ul>
-                                    {% for field_name, errors in itemForm.errors.items %}
-                                        <li><strong>{{ field_name }}:</strong>
-                                            {% for error in errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </li>
-                                    {% endfor %}
-                                    {% if itemForm.non_field_errors %}
-                                        {% for error in itemForm.non_field_errors %}
-                                            <li>{{ error }}</li>
-                                        {% endfor %}
-                                    {% endif %}
-                                </ul>
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                {# This hidden row will serve as our template for new rows #}
-                <tr id="empty-form-template" style="display: none;">
-                    <td>{{ itemFormSet.empty_form.itemName }}</td>
-                    <td>{{ itemFormSet.empty_form.rate }}</td>
-                    <td>{{ itemFormSet.empty_form.gst }}</td>
-                    <td>{{ itemFormSet.empty_form.qty }}</td>
-                    <td><button type="button" class="remove-row-button">Remove</button></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="form-table-container">
+      <table class="form-table" id="item-table">
+        <thead>
+          <tr>
+            <th>{{ itemFormSet.empty_form.itemName.label }}</th>
+            <th>{{ itemFormSet.empty_form.rate.label }}</th>
+            <th>{{ itemFormSet.empty_form.gst.label }}</th>
+            <th>{{ itemFormSet.empty_form.qty.label }}</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for itemForm in itemFormSet %}
+          <tr class="item-row">
+            <td>
+              <div class="form-field">
+                {{ itemForm.itemName }}
+              </div>
+            </td>
+            <td>
+              <div class="form-field">
+                {{ itemForm.rate }}
+              </div>
+            </td>
+            <td>
+              <div class="form-field">
+                {{ itemForm.gst }}
+              </div>
+            </td>
+            <td>
+              <div class="form-field">
+                {{ itemForm.qty }}
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn-destructive remove-row-button">Remove</button>
+            </td>
+          </tr>
 
-        <button type="button" id="add-item-button">Add new Item</button> {# Changed type to button and added ID #}
-        <button type="submit">Generate</button>
-    </form>
+          {% if itemForm.errors %}
+          <tr>
+            <td colspan="5">
+              <div class="form-error-card">
+                <ul>
+                  {% for field_name, errors in itemForm.errors.items %}
+                    <li><strong>{{ field_name }}:</strong>
+                      {% for error in errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </li>
+                  {% endfor %}
+                  {% if itemForm.non_field_errors %}
+                    {% for error in itemForm.non_field_errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  {% endif %}
+                </ul>
+              </div>
+            </td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+
+          <tr id="empty-form-template" style="display: none;">
+            <td><div class="form-field">{{ itemFormSet.empty_form.itemName }}</div></td>
+            <td><div class="form-field">{{ itemFormSet.empty_form.rate }}</div></td>
+            <td><div class="form-field">{{ itemFormSet.empty_form.gst }}</div></td>
+            <td><div class="form-field">{{ itemFormSet.empty_form.qty }}</div></td>
+            <td><button type="button" class="btn-secondary remove-row-button">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 1rem;">
+      <button type="button" id="add-item-button" class="btn-secondary">Add New Item</button>
+    </div>
+
+    <div class="totals" style="text-align: right; margin-top: 2rem; font-weight: 500;">
+      <p>Subtotal: <span id="subtotal-display">{{ invoiceInst.subTotal|default:"0.00" }}</span></p>
+      <p>Total GST: <span id="gst-total-display">{{ invoiceInst.gstTotal|default:"0.00" }}</span></p>
+      <p>Grand Total: <span id="grand-total-display">{{ invoiceInst.grandTotal|default:"0.00" }}</span></p>
+    </div>
+    
+    <div style="margin-top: 1.5rem; display: flex; justify-content: center;">
+      <button type="submit" class="btn-primary" style="width: 100%;">Generate</button>
+    </div>
+  </form>
+</div>
+
 <script>
-    const FORMSET_PREFIX = "{{ itemFormSet.prefix }}";
-    const IS_EDIT_PAGE = false;
+  const FORMSET_PREFIX = "{{ itemFormSet.prefix }}";
+  const IS_EDIT_PAGE = false;
 </script>
 <script src="{% static 'script.js' %}" defer></script>
 {% endblock %}

@@ -5,9 +5,19 @@
 {% endblock %}
 
 {% block body %}
-    <form method='post'>
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Save</button>
-    </form>
+    <div class="card">
+        <h2 class="form-header">Edit Profile</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn-primary" style="width: 100%;;margin-top: 1rem;">
+                Update Details
+            </button>
+        </form>
+    </div>
 {% endblock %}

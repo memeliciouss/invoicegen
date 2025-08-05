@@ -161,6 +161,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') {
                 element.value = '';
                 element.checked = false;
+
+                if (element.name.endsWith('-gst')){
+                    element.value = '18' // default value for gst
+                }
+                if (element.name.endsWith('-qty')){
+                    element.value = '1' // default value for qty
+                }
             }
             if (element.name && (element.name.endsWith('-rate') || element.name.endsWith('-gst') || element.name.endsWith('-qty'))) {
                 element.addEventListener('input', calculateTotals);
@@ -169,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const newRemoveButton = newRow.querySelector('.remove-row-button');
         if (newRemoveButton) {
+            newRemoveButton.classList.add('btn-destructive'); // add btn-destructive class to remove button
             addRemoveButtonListener(newRemoveButton);
         }
 

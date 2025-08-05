@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
+from django.urls import reverse
 from .forms import newInvoiceForm, ItemFormSet, editInvoiceForm, ItemEditFormSet
 from .models import Invoice
 
@@ -42,7 +43,7 @@ def edit(request, pk):
             invoiceInst.calculate_totals()
             invoiceInst.save(update_fields=['subTotal', 'gstTotal', 'grandTotal'])
 
-            return redirect('/inv/list')
+            return redirect(reverse('invoice', args=[pk]))
     else:
         invoiceForm = editInvoiceForm(instance=invoiceInst)
         itemFormSet = ItemEditFormSet(instance=invoiceInst,prefix='items')

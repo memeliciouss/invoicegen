@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="form-card">
+    <div class="card">
         <h2 class="form-header">Add New Buyer</h2>
         <form method="post">
             {% csrf_token %}
@@ -15,7 +15,7 @@
                     {{ field }}
                 </div>
             {% endfor %}
-            <button type="submit" class="btn-primary" style="margin-top: 1rem;">
+            <button type="submit" class="btn-primary" style="width: 100%;;margin-top: 1rem;">
                 Submit
             </button>
         </form>

@@ -14,7 +14,7 @@ class Profile(models.Model):
     email = models.CharField(max_length = 64,blank=True, null=True)
     bankName = models.CharField(max_length=64)
     bankAcc = models.CharField(max_length=32)
-    bandIfsc = models.CharField(max_length=32)
+    bankIfsc = models.CharField(max_length=32)
     logo = models.ImageField(upload_to='asset/', blank=True, null=True)
 
     def __str__(self):
