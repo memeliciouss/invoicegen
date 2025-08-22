@@ -5,10 +5,55 @@
 {% endblock %}
 
 {% block body %}
-    {% for profile in profiles %}
-        {{profile.name}}
-        {{profile.email}}
-        <button onclick="window.location.href='edit/{{ profile.userId }}'">Edit</button>
+    <div class="card" style="margin-top: 20px;">
+        <h3 style="margin:0 0 1rem 0"> User Profile(s)</h3>
+        {% if profiles %}
+            {% for profile in profiles %}
+                <div style="display: flex; 
+                    justify-content: space-between; 
+                    align-items: flex-start; 
+                    border: 1px solid #ddd; 
+                    background-color: #f9f9f9;
+                    padding: 15px; 
+                    margin-bottom: 10px; 
+                    border-radius: 8px;">
+                    <div style="flex-grow: 1;">
+                       <h4 style="margin: 0 0 10px; font-size: 1.2em; color: #333;">{{ profile.name }}</h4>
+                        
+                        <p style="margin: 0; color: #666;">
+                            <strong>Address:</strong><br>
+                            {{ profile.adr1 }}<br>
+                            {{ profile.adr2 }}<br>
+                            {{ profile.state }} - {{ profile.pin }}
+                        </p>
+                        
+                        <p style="margin: 10px 0 0; color: #666;">
+                            <strong>Contact:</strong><br>
+                            {% if profile.contact %}{{ profile.contact }}{% else %}N/A{% endif %}<br>
+                            {% if profile.email %}{{ profile.email }}{% else %}N/A{% endif %}
+                        </p>
 
-    {% endfor %}
+                        <p style="margin: 10px 0 0; color: #666;">
+                            <strong>GSTIN:</strong> {{ profile.gstin }}
+                        </p>
+                        
+                        <p style="margin: 10px 0 0; color: #666;">
+                            <strong>Bank Details:</strong><br>
+                            Bank: {{ profile.bankName }}<br>
+                            Account No: {{ profile.bankAcc }}<br>
+                            IFSC: {{ profile.bankIfsc }}
+                        </p>
+                    </div>
+                    
+                    <div style="margin-left: 20px; ">
+                        <button class="btn-secondary" onclick="window.location.href='edit/{{ profile.userId }}'">
+                            Edit
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No profiles found.</p>
+        {% endif %}
+    </div>
 {% endblock %}

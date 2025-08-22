@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
 from django.urls import reverse
+from django.core.paginator import Paginator
 from .forms import newInvoiceForm, ItemFormSet, editInvoiceForm, ItemEditFormSet
 from .models import Invoice
 
@@ -63,8 +64,14 @@ def invoiceView(request, pk):
     return render(request, 'invoice.html',context)
 
 def invoiceList(request):
+    # order the invoices in reverse order by date
+    invoices=Invoice.objects.all().select_related('buyerId').order_by('-date')
+    paginator = Paginator(invoices, 10)
+    page_number = request.GET.get('page')
+
+    invoices_page = paginator.get_page(page_number)
     context={
-        'invoices':Invoice.objects.all().select_related('buyerId')
+        'invoices':invoices_page
     }
     return render(request, 'invoiceList.html', context)
 

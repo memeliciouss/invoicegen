@@ -1,21 +1,54 @@
 {% extends 'base.html' %} {% block title %} Buyers List {% endblock %} 
-{% block body %} List of all buyers
+{% block body %}
 
-<a href="/buyers/add"> Add new buyer </a>
-<div>
-  {% if buyers %} {% for buyer in buyers %}
-  <div>
-      {{forloop.counter}}
-      {{buyer.name}}
-      <form method="post" action="remove/{{buyer.buyerId}}">
-        {% csrf_token %}
-        <button type  ="submit">Delete</button>
-      </form>
-    
+<div class="card">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="flex:1">
+      <h3>
+        List of buyers
+      </h3>
+    </div>
+    <div style="flex:1; text-align: right;">
+      <button class="btn-secondary" onclick="location.href='/buyers/add'">
+        + Add new Buyer
+      </button>
+    </div>
   </div>
-  {% endfor %} 
-  {% else %}
-   No buyers 
-   {% endif %}
+<div style="margin-top: 10px;">
+    {% if buyers %}
+        {% for buyer in buyers %}
+            <div style="display: flex; 
+              align-items: flex-start; 
+              justify-content: space-between; 
+              border: 1px solid #ccc; 
+              padding: 10px; 
+              margin-bottom: 10px; 
+              border-radius: 5px;">
+                <span style="margin-right: 15px;">{{ forloop.counter }}.</span>
+
+                <div style="flex-grow: 1;">
+                    <h4 style="margin: 0;">{{ buyer.name }}</h4>
+                    <p >
+                        {{ buyer.adr1 }}, {{ buyer.adr2 }}<br>
+                        {{ buyer.state }} - {{ buyer.pin }}<br>
+                        GSTIN: {{ buyer.gstin }}
+                    </p>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <form method="post" action="remove/{{ buyer.buyerId }}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-destructive">Delete</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% include 'pagination.html' with page_obj=buyers  %}
+
+    {% else %}
+        <p>No buyers found.</p>
+    {% endif %}
 </div>
 {% endblock %}
+</div>

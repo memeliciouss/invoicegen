@@ -1,11 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 from buyer.models import buyer
 from buyer.forms import newBuyerForm
 
 # Create your views here.
 def buyers(request):
+    buyers=buyer.objects.all().order_by('buyerId')
+    paginator = Paginator(buyers, 10)
+    page_number = request.GET.get('page')
+    buyers_page = paginator.get_page(page_number
+                                     )
     context = {
-        'buyers':buyer.objects.all()
+        'buyers': buyers_page
     }
     return render(request, 'buyers.html', context)
 

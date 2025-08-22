@@ -55,6 +55,8 @@ ItemFormSet = inlineformset_factory(
     Items, 
     form = ItemForm,
     extra = 1,
+    min_num=1,
+    can_delete=True
 )
 
 ItemEditFormSet = inlineformset_factory(
@@ -63,7 +65,8 @@ ItemEditFormSet = inlineformset_factory(
     form = ItemForm,
     formset=CustomBaseItemFormSet,
     extra = 0,
-    can_delete=True
+    min_num=1,
+    can_delete=True,
 )
 
 class editInvoiceForm(forms.ModelForm):

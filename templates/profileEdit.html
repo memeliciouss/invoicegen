@@ -5,17 +5,69 @@
 {% endblock %}
 
 {% block body %}
-    <div class="card">
-        <h2 class="form-header">Edit Profile</h2>
+    <div class="card" style="margin-top: 20px;">
+        <h3 style="font-size: 1.5rem; font-weight: 600; color: #111827; margin:0 0 1rem 0;">Edit Profile</h3>
         <form method="post">
             {% csrf_token %}
-            {% for field in form %}
-                <div class="form-field">
-                    {{ field.label_tag }}
-                    {{ field }}
+            
+            <div class="form-field">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+            </div>
+            
+            <div class="form-field">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+            
+            <div class="form-field">
+                {{ form.contact.label_tag }}
+                {{ form.contact }}
+            </div>
+                        
+
+            <div style="display: flex; gap: 1rem;">
+                <div class="form-field" style="flex: 1;">
+                    {{ form.adr1.label_tag }}
+                    {{ form.adr1 }}
                 </div>
-            {% endfor %}
-            <button type="submit" class="btn-primary" style="width: 100%;;margin-top: 1rem;">
+                <div class="form-field" style="flex: 1;">
+                    {{ form.adr2.label_tag }}
+                    {{ form.adr2 }}
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <div class="form-field" style="flex: 1;">
+                    {{ form.state.label_tag }}
+                    {{ form.state }}
+                </div>
+                <div class="form-field" style="flex: 1;">
+                    {{ form.pin.label_tag }}
+                    {{ form.pin }}
+                </div>
+            </div>
+
+            <div class="form-field">
+                {{ form.gstin.label_tag }}
+                {{ form.gstin }}
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <div class="form-field" style="flex: 1;">
+                    {{ form.bankName.label_tag }}
+                    {{ form.bankName }}
+                </div>
+                <div class="form-field" style="flex: 1;">
+                    {{ form.bankAcc.label_tag }}
+                    {{ form.bankAcc }}
+                </div>
+                <div class="form-field" style="flex: 1;">
+                    {{ form.bankIfsc.label_tag }}
+                    {{ form.bankIfsc }}
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">
                 Update Details
             </button>
         </form>

@@ -5,20 +5,59 @@
 {% endblock %}
 
 {% block body %}
-    List of all Invoices
-    <a href="generate">
-        Generate new Invoice
-    </a>
-
-
-    <div>
-        {% for invoice in invoices %}
-            <p>{{forloop.counter}}.
-                {{ invoice.invNum }} - 
-                {{ invoice.buyerId.name }} - 
-                {{ invoice.date }}
-                <button onclick="window.location.href='/inv/{{invoice.invId}}'">View</button>
-            </p>
-        {% endfor %}
+<div class="card" style="min-width: 80%;">
+    
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="flex:1">
+      <h3 style="margin: 1rem 0 1rem 0;">
+        List of Invoices
+      </h3>
     </div>
+    <div style="flex:1; text-align: right;">
+      <button class="btn-secondary" onclick="location.href='/inv/generate'">
+        + Generate new Invoice
+      </button>
+    </div>
+  </div>
+
+    <div style="margin-top: 20px;">
+    {% if invoices %}
+        {% for invoice in invoices %}
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem; background-color: white;">
+                
+                <div style="flex-grow: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <h4 style="font-size: 1.125rem; font-weight: 600; color: #111827; margin: 0;">
+                            Invoice# {{ invoice.invNum }}
+                        </h4>
+                        <span style="font-size: 0.875rem; color: #6b7280;">
+                            {{ invoice.date|date:"j F, Y" }}
+                        </span>
+                    </div>
+
+                    <div style="font-size: 0.875rem; color: #4b5563; margin-top: 0.5rem;">
+                        <p style="margin: 0;">Buyer: <strong>{{ invoice.buyerId.name }}</strong></p>
+                    </div>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; font-size: 0.875rem; color: #4b5563;">
+                        <p style="margin: 0;">Subtotal: <strong>Rs. {{ invoice.subTotal }}</strong></p>
+                        <p style="margin: 0;">GST: <strong>Rs. {{ invoice.gstTotal }}</strong></p>
+                        <p style="margin: 0;">Total: <strong>Rs. {{ invoice.grandTotal }}</strong></p>
+                    </div>
+                </div>
+
+                <div style="margin-left: 1.5rem;">
+                    <button onclick="window.location.href='/inv/{{invoice.invId}}'" 
+                            style="display: inline-flex; align-items: center; justify-content: center; height: 2.2rem; padding: 0 1rem; font-size: 0.9rem; font-weight: 500; border-radius: 0.375rem; border: 1px solid #606265; background-color: white; color: #111827; cursor: pointer; transition: all 0.15s;">
+                        View
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+        {% include 'pagination.html' with page_obj=invoices %}
+    {% else %}
+        <p>No invoices found.</p>
+    {% endif %}
+</div>
+</div>
 {% endblock %}
