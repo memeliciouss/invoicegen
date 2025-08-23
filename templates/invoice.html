@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}
 Invoice {{ invoice.invNum}}
 {% endblock %}
@@ -80,9 +82,11 @@ Invoice {{ invoice.invNum}}
           <button type="button" class="btn-secondary" style="width: 100%;">Edit</button>
         </a>
         
-        <form method="post" action="drop/{{invoice.invId}}" style="flex: 1;">
+        <form id="deleteForm" method="post" action="drop/{{invoice.invId}}" style="flex: 1;">
           {% csrf_token %}
-          <button type="submit" class="btn-destructive" style="width: 100%;">Delete</button>
+          <button type="button" class="btn-destructive" style="width: 100%;" onclick="showConfirmModal(this.form)">
+            Delete
+          </button>
         </form>
       </div>
       
@@ -92,4 +96,17 @@ Invoice {{ invoice.invNum}}
     </div>
   </div>
 </div>
+
+<div id="confirmModal" class="modal">
+  <div class="modal-content">
+    <h4>Are you sure you want to delete Invoice #{{ invoice.invNum }} </h4>
+    <div class="modal-buttons">
+      <button type="button" class="btn-secondary" onclick="hideConfirmModal()">Cancel</button>
+      <button type="submit" class="btn-destructive" onclick="submitModalForm()">Confirm Delete</button>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'modal.js' %}" defer></script>
+
 {% endblock %}

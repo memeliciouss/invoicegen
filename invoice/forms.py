@@ -55,7 +55,6 @@ ItemFormSet = inlineformset_factory(
     Items, 
     form = ItemForm,
     extra = 1,
-    min_num=1,
     can_delete=True
 )
 
@@ -65,7 +64,6 @@ ItemEditFormSet = inlineformset_factory(
     form = ItemForm,
     formset=CustomBaseItemFormSet,
     extra = 0,
-    min_num=1,
     can_delete=True,
 )
 
