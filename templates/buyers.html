@@ -13,7 +13,8 @@
         </div>
         <div style="flex:1; text-align: right;">
             <button class="btn-secondary" onclick="location.href='/buyers/add'">
-                + Add new Buyer
+                <svg xmlns="http://www.w3.org/2000/svg" style="margin:0 5px 0 0" width="1.2rem" height="1.2rem" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 21v-1c0 -2.21 1.79 -4 4 -4h4c2.21 0 4 1.79 4 4v1"/><path d="M9 13c-1.66 0 -3 -1.34 -3 -3c0 -1.66 1.34 -3 3 -3c1.66 0 3 1.34 3 3c0 1.66 -1.34 3 -3 3Z"/><path d="M15 6h6"/><path d="M18 3v6"/></g></svg>
+                Add new Buyer
             </button>
         </div>
     </div>
@@ -41,7 +42,10 @@
                     <div style="margin-left: 10px;">
                         <form method="post" action="remove/{{ buyer.buyerId }}">
                             {% csrf_token %}
-                            <button type="button" class="btn-destructive" onclick="showConfirmModal(this.form)">Delete</button>
+                            <button type="button" class="btn-destructive" onclick="showConfirmModal(this.form)">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="margin:0 5px 0 0" width="1.2rem" height="1.2rem" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 21v-1c0 -2.21 1.79 -4 4 -4h4c2.21 0 4 1.79 4 4v1"/><path d="M9 13c-1.66 0 -3 -1.34 -3 -3c0 -1.66 1.34 -3 3 -3c1.66 0 3 1.34 3 3c0 1.66 -1.34 3 -3 3Z"/><path d="M15 3l6 6"/><path d="M21 3l-6 6"/></g></svg>
+                                Delete
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -60,7 +64,11 @@
         <h4>Are you sure you want to delete this buyer?</h4>
         <div class="modal-buttons">
             <button type="button" class="btn-secondary" onclick="hideConfirmModal()">Cancel</button>
-            <button type="button" class="btn-destructive" onclick="submitModalForm()">Confirm Delete</button>
+            <button type="button" class="btn-destructive" onclick="submitModalForm()">
+                                                <svg xmlns="http://www.w3.org/2000/svg" style="margin:0 5px 0 0" width="18" height="18" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 21v-1c0 -2.21 1.79 -4 4 -4h4c2.21 0 4 1.79 4 4v1"/><path d="M9 13c-1.66 0 -3 -1.34 -3 -3c0 -1.66 1.34 -3 3 -3c1.66 0 3 1.34 3 3c0 1.66 -1.34 3 -3 3Z"/><path d="M15 3l6 6"/><path d="M21 3l-6 6"/></g></svg>
+
+                Confirm Delete
+            </button>
         </div>
     </div>
 </div>

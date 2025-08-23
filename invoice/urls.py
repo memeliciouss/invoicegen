@@ -7,5 +7,5 @@ urlpatterns = [
     path('<int:pk>', views.invoiceView, name='invoice'),
     path('edit/<int:pk>', views.edit, name='editInvoice'),
     path('drop/<int:pk>',views.drop, name='dropInvoice'),
-    path('list',views.invoiceList, name='InvoiceList'),
+    path('list',views.invoiceList, name='invoiceList'),
 ]

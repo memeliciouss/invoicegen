@@ -1,63 +1,168 @@
-{% extends 'base.html' %}
-
-{% block title %}
-    Invoice List
-{% endblock %}
-
+{% extends 'base.html' %} 
+{% block title %} Invoice List {% endblock %} 
 {% block body %}
-<div class="card" style="min-width: 80%;">
-    
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div style="flex:1">
-      <h3 style="margin: 1rem 0 1rem 0;">
-        List of Invoices
-      </h3>
+<div class="card" style="min-width: 80%">
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    "
+  >
+    <div style="flex: 1; margin-right: 1rem">
+      <h3 style="margin: 0">List of Invoices</h3>
     </div>
-    <div style="flex:1; text-align: right;">
-      <button class="btn-secondary" onclick="location.href='/inv/generate'">
-        + Generate new Invoice
+    <div
+      style="
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      "
+    >
+      <form method="GET" action="{% url 'invoiceList' %}" style="display: flex">
+        <input
+          type="text"
+          class="search"
+          name="q"
+          placeholder="Search by invoice or buyer"
+          value="{{ request.GET.q|default:'' }}"
+        />
+        <button
+          type="submit"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            border: 1px solid #c0c0c0;
+            border-radius: 0 0.375rem 0.375rem 0;
+            background-color: #f8f8f8;
+            color: #111827;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            outline: none;
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1.2rem"
+            height="1.2rem"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0s.41-1.08 0-1.49zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14"
+            />
+          </svg>
+        </button>
+      </form>
+      <button
+        class="btn-secondary"
+        onclick="location.href='/inv/generate'"
+        style="display: flex; align-items: center; gap: 0.5rem"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1.2rem"
+          height="1.2rem"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h6v2H5v14h14v-6h2v6q0 .825-.587 1.413T19 21zm11-10V8h-3V6h3V3h2v3h3v2h-3v3z"
+          />
+        </svg>
+        Generate new Invoice
       </button>
     </div>
   </div>
 
-    <div style="margin-top: 20px;">
-    {% if invoices %}
-        {% for invoice in invoices %}
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem; background-color: white;">
-                
-                <div style="flex-grow: 1;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <h4 style="font-size: 1.125rem; font-weight: 600; color: #111827; margin: 0;">
-                            Invoice# {{ invoice.invNum }}
-                        </h4>
-                        <span style="font-size: 0.875rem; color: #6b7280;">
-                            {{ invoice.date|date:"j F, Y" }}
-                        </span>
-                    </div>
+  <div style="margin-top: 20px">
+    {% if invoices %} {% for invoice in invoices %}
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        background-color: white;
+      "
+    >
+      <div style="flex-grow: 1">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+          "
+        >
+          <h4
+            style="
+              font-size: 1.125rem;
+              font-weight: 600;
+              color: #111827;
+              margin: 0;
+            "
+          >
+            Invoice# {{ invoice.invNum }}
+          </h4>
+          <span style="font-size: 0.875rem; color: #6b7280">
+            {{ invoice.date|date:"j F, Y" }}
+          </span>
+        </div>
 
-                    <div style="font-size: 0.875rem; color: #4b5563; margin-top: 0.5rem;">
-                        <p style="margin: 0;">Buyer: <strong>{{ invoice.buyerId.name }}</strong></p>
-                    </div>
+        <div style="font-size: 0.875rem; color: #4b5563; margin-top: 0.5rem">
+          <p style="margin: 0">
+            Buyer: <strong>{{ invoice.buyerId.name }}</strong>
+          </p>
+        </div>
 
-                    <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; font-size: 0.875rem; color: #4b5563;">
-                        <p style="margin: 0;">Subtotal: <strong>Rs. {{ invoice.subTotal }}</strong></p>
-                        <p style="margin: 0;">GST: <strong>Rs. {{ invoice.gstTotal }}</strong></p>
-                        <p style="margin: 0;">Total: <strong>Rs. {{ invoice.grandTotal }}</strong></p>
-                    </div>
-                </div>
+        <div
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+          "
+        >
+          <p style="margin: 0">
+            Subtotal: <strong>Rs. {{ invoice.subTotal }}</strong>
+          </p>
+          <p style="margin: 0">
+            GST: <strong>Rs. {{ invoice.gstTotal }}</strong>
+          </p>
+          <p style="margin: 0">
+            Total: <strong>Rs. {{ invoice.grandTotal }}</strong>
+          </p>
+        </div>
+      </div>
 
-                <div style="margin-left: 1.5rem;">
-                    <button onclick="window.location.href='/inv/{{invoice.invId}}'" 
-                            style="display: inline-flex; align-items: center; justify-content: center; height: 2.2rem; padding: 0 1rem; font-size: 0.9rem; font-weight: 500; border-radius: 0.375rem; border: 1px solid #606265; background-color: white; color: #111827; cursor: pointer; transition: all 0.15s;">
-                        View
-                    </button>
-                </div>
-            </div>
-        {% endfor %}
-        {% include 'pagination.html' with page_obj=invoices %}
+      <div style="margin-left: 1.5rem">
+        <button class="btn-secondary"
+          onclick="window.location.href='/inv/{{invoice.invId}}'"
+        >
+        <svg xmlns="http://www.w3.org/2000/svg" style="margin:0 5px 0 0" width="1.2rem" height="1.2rem" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0"/></svg>
+          View
+        </button>
+      </div>
+    </div>
+    {% endfor %} 
+    
+    {% include 'pagination.html' with page_obj=invoices %} 
+
     {% else %}
-        <p>No invoices found.</p>
+    <p>No invoices found.</p>
     {% endif %}
-</div>
+  </div>
 </div>
 {% endblock %}
