@@ -1,201 +1,233 @@
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #f9fafb;
-    color: #111827;
-    margin: 0;
-    line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background-color: #f9fafb;
+  color: #111827;
+  margin: 0;
+  line-height: 1.5;
 }
 
 p {
   margin: 0;
 }
 
+/* Styles for print output */
+@media print {
+  /* Hides everything on the page */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Makes only the #invoice card and its children visible */
+  #invoice,
+  #invoice * {
+    visibility: visible;
+  }
+
+  /* Positions the #invoice card at the top-left of the print page */
+  #invoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 15px;
+  }
+
+  /* Remove rounded corners from the card on print */
+  .card {
+    border-radius: 0 !important;
+  }
+
+  /* Ensure the totals section has no borders and is properly aligned */
+  .totals {
+    border: none !important;
+  }
+}
+
 .container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 1rem 1.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
 }
 
 /* Navbar */
 .navbar-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    border-bottom: 1px solid #e2e8f0;
-    background-color: #fff;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #fff;
 }
 
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    width: 100%;
-    max-width: 1280px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  width: 100%;
+  max-width: 1280px;
 }
 
 .nav-links-group {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .nav-link {
-    text-decoration: none;
-    padding-bottom: 0.5rem;
-    transition: color 0.2s ease-in-out;
-    font-weight: 500;
-    color: #4b5563;
+  text-decoration: none;
+  padding-bottom: 0.5rem;
+  transition: color 0.2s ease-in-out;
+  font-weight: 500;
+  color: #4b5563;
 }
 
 .nav-link:hover,
 .nav-link.active {
-    color: #0f172a;
-    font-weight: 600;
+  color: #0f172a;
+  font-weight: 600;
 }
 
 .nav-link.active {
-    border-bottom: 2px solid #1e3a8a;
+  border-bottom: 2px solid #1e3a8a;
 }
 
 /* Buttons */
 .btn-secondary,
 .btn-destructive,
 .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 2.2rem;
-    padding: 0 1rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    border-radius: 0.375rem;
-    border: 1px solid transparent;
-    background-color: white;
-    cursor: pointer;
-    transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.2rem;
+  padding: 0 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.15s;
 }
 
 .btn-secondary {
-    border-color: #606265;
-    color: #111827;
+  border-color: #606265;
+  color: #111827;
 }
 
 .btn-secondary:hover {
-    background-color: #f9fafb;
+  background-color: #f9fafb;
 }
 
 .btn-destructive {
-    border-color: #fecaca;
-    color: #dc2626;
+  border-color: #fecaca;
+  color: #dc2626;
 }
 
 .btn-destructive:hover {
-    background-color: #fef2f2;
+  background-color: #fef2f2;
 }
 
 .btn-primary {
-    background-color: #111827;
-    color: white;
-    border: none;
+  background-color: #111827;
+  color: white;
+  border: none;
 }
 
 .btn-primary:hover {
-    background-color: #1f2937;
+  background-color: #1f2937;
 }
 
 /* Form Base */
 .card {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 1.5rem;
-    background-color: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .form-field {
-    display: grid;
-    gap: 0.35rem;
-    padding: 0 0 0.5rem 0;
+  display: grid;
+  gap: 0.35rem;
+  padding: 0 0 0.5rem 0;
 }
 
 .form-field label {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #6b6c6d;
-    line-height: 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b6c6d;
+  line-height: 1.25rem;
 }
 
 .form-field input,
 .form-field select,
 .form-field textarea {
-    width: 100%;
-    padding: 0.4375rem 0.75rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: #111827;
-    background-color: white;
-    border: 1px solid #d1d5db;
-    border-radius: 0.375rem;
-    transition: border-color 0.15s;
-    height: 2rem;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 0.4375rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #111827;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s;
+  height: 2rem;
+  box-sizing: border-box;
 }
 
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-    outline: none;
-    border-color: #0f3891;
-    box-shadow: 0 0 0 1px #0f3891;
+  outline: none;
+  border-color: #0f3891;
+  box-shadow: 0 0 0 1px #0f3891;
 }
 
 .error {
-    font-size: 0.75rem;
-    color: #dc2626;
-    margin-top: 0.25rem;
-    padding-left: 0;
-    list-style: none;
+  font-size: 0.75rem;
+  color: #dc2626;
+  margin-top: 0.25rem;
+  padding-left: 0;
+  list-style: none;
 }
 
 /* Table */
 .form-table-container {
-    border: 1px solid #e5e7eb;
-    border-radius: 0.375rem;
-    overflow: hidden;
-    margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  margin-bottom: 1rem;
 }
 
 .form-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .form-table th {
-    background-color: #f9fafb;
-    padding: 0.5rem 1rem;
-    text-align: left;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: #4b5563;
-    border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .form-table td {
-    padding: 0.5rem 1rem;
-    border-bottom: 1px solid #e5e7eb;
-    vertical-align: top;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: top;
 }
-
 
 /* Error Card */
 .form-error-card {
-    color: #dc2626;
-    background-color: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: 0.375rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
+  color: #dc2626;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }

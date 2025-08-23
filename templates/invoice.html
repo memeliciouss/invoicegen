@@ -1,52 +1,40 @@
-{% extends 'base.html' %} 
-{% block title %} Invoice {{ invoice.invNum}} {% endblock %} 
-{% block body %} 
-<div class="card">
+{% extends 'base.html' %}
+{% block title %}
+Invoice {{ invoice.invNum}}
+{% endblock %}
+{% block body %}
 
-    <div style="display: flex; align-items: center; justify-content: space-between;">
-        <div>
-            <h3>
-                Invoice {{invoice.invNum}}
-            </h3>
-        </div>  
-        
-        <div style="display: flex; gap:1rem;">
-            <a href="{% url 'editInvoice' pk=invoice.invId %}">
-                <button type="button" class="btn-secondary">Edit</button>
-            </a>
-            
-            <form method = 'post' action="drop/{{invoice.invId}}">
-                {% csrf_token %}
-                <button type="submit" class="btn-destructive">Delete</button>
-            </form>
-        </div>
-    </div>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px;">
+  <div style="flex: 0.5; max-width: 250px;"></div>
 
-    <div style="display: flex; gap: 2px; margin-bottom: 1rem;">
-        
-        <div style="flex:1;">
-            <div class="form-field" style="gap:1px">
-            <label>Buyer:</label>
-            <p>{{ invoice.buyerId.name }}</p>
-            <p>GSTIN: {{ invoice.buyerId.gstin }}</p>
-            <p>{{ invoice.buyerId.adr1 }}</p>
-            <p>{{ invoice.buyerId.adr2 }}</p>
-            <p>{{ invoice.buyerId.state }}, {{ invoice.buyerId.pin }}</p>
-          </div>
-        </div>
-        <div style="flex:1;">
-            <div class="form-field">
-                <label>Invoice Number: </label>
-                <p>{{invoice.invNum}}</p>
-            </div>
-
-            <div class="form-field" style="width: 80%;">
-                {{ invoice.date }}
-            </div>
+  <div id="invoice" class="card" style="flex: 1.5; min-width: 700px;">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div>
+        <h3>Invoice {{invoice.invNum}}</h3>
       </div>
-
     </div>
-
+    
+    <div style="display: flex; gap: 2px; margin-bottom: 1rem">
+      <div style="flex: 1">
+        <div class="form-field" style="gap: 1px">
+          <label>Buyer:</label>
+          <p>{{ invoice.buyerId.name }}</p>
+          <p>GSTIN: {{ invoice.buyerId.gstin }}</p>
+          <p>{{ invoice.buyerId.adr1 }}</p>
+          <p>{{ invoice.buyerId.adr2 }}</p>
+          <p>{{ invoice.buyerId.state }}, {{ invoice.buyerId.pin }}</p>
+        </div>
+      </div>
+      <div style="flex: 1">
+        <div class="form-field">
+          <label>Invoice Number: </label>
+          <p>{{invoice.invNum}}</p>
+        </div>
+        
+        <div class="form-field" style="width: 80%">{{ invoice.date }}</div>
+      </div>
+    </div>
+    
     <div class="form-table-container">
       <table class="form-table" id="item-table">
         <thead>
@@ -61,40 +49,47 @@
           {% for item in items %}
           <tr class="item-row">
             <td>
-              <div class="form-field">
-                {{ item.itemName }}
-              </div>
+              <div class="form-field">{{ item.itemName }}</div>
             </td>
             <td>
-              <div class="form-field">
-                {{ item.rate }}
-              </div>
+              <div class="form-field">{{ item.rate }}</div>
             </td>
             <td>
-              <div class="form-field">
-                {{ item.gst }}
-              </div>
+              <div class="form-field">{{ item.gst }}</div>
             </td>
             <td>
-              <div class="form-field">
-                {{ item.qty }}
-              </div>
+              <div class="form-field">{{ item.qty }}</div>
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
 
-        <div class="totals" style="text-align: right; margin-top: 2rem; font-weight: 500;">
-            <p>Subtotal: <span id="subtotal-display">{{ invoice.subTotal }}</span></p>
-            <p>Total GST: <span id="gst-total-display">{{ invoice.gstTotal }}</span></p>
-            <p>Grand Total: <span id="grand-total-display">{{ invoice.grandTotal }}</span></p>
-        </div>
+      <div class="totals" style="text-align: right; margin-top: 2rem; font-weight: 500">
+        <p>Subtotal: <span id="subtotal-display">{{ invoice.subTotal }}</span></p>
+        <p>Total GST: <span id="gst-total-display">{{ invoice.gstTotal }}</span></p>
+        <p>Grand Total: <span id="grand-total-display">{{ invoice.grandTotal }}</span></p>
+      </div>
     </div>
+  </div>
 
-    <button class="btn-primary" style="width: 100%;">
+  <div class="card" style="flex: 0.5; max-width: 250px; height: fit-content; margin-top: 50px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div style="display: flex; gap: 10px;">
+        <a href="{% url 'editInvoice' pk=invoice.invId %}" style="flex: 1;">
+          <button type="button" class="btn-secondary" style="width: 100%;">Edit</button>
+        </a>
+        
+        <form method="post" action="drop/{{invoice.invId}}" style="flex: 1;">
+          {% csrf_token %}
+          <button type="submit" class="btn-destructive" style="width: 100%;">Delete</button>
+        </form>
+      </div>
+      
+      <button class="btn-primary" style="width: 100%;" onclick="window.print()">
         Print
-    </button>
+      </button>
+    </div>
+  </div>
 </div>
 {% endblock %}
-    
