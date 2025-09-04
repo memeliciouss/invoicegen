@@ -28,9 +28,10 @@ def generate(request):
         itemFormSet = ItemFormSet(prefix='items')
     context = {
         'invoiceForm': invoiceForm,
-        'itemFormSet': itemFormSet
+        'itemFormSet': itemFormSet,
+        'isEdit' : False
     }
-    return render(request, 'generateInvoice.html', context)
+    return render(request, 'invoiceForm.html', context)
 
 @transaction.atomic
 def edit(request, pk):
@@ -52,9 +53,10 @@ def edit(request, pk):
     context = {
         'invoiceForm': invoiceForm,
         'itemFormSet': itemFormSet,
-        'invoiceInst':invoiceInst
+        'invoiceInst':invoiceInst,
+        'isEdit':True
     }
-    return render(request, 'editInvoice.html', context)
+    return render(request, 'invoiceForm.html', context)
 
 def invoiceView(request, pk):
     invoiceInst = Invoice.objects.select_related('buyerId').get(invId = pk)

@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
+{% if isEdit %}
 Edit Invoice {{ invoiceInst.invNum }}
+{% else %}
+Generate Invoice
+{% endif %}
+
 {% endblock %}
 
 {% block body %}
 <div class="card">
-  <h2>Edit Invoice</h2>
+  {% if isEdit %}
+    <h2>Edit Invoice</h2>
+  {% else %}  
+    <h2>Generate Invoice</h2>
+  {% endif %}  
 
   <form method="post">
     {% csrf_token %}
@@ -14,29 +23,40 @@ Edit Invoice {{ invoiceInst.invNum }}
     <div style="display: flex; gap: 2px; margin-bottom: 1rem;">
 
       <div style="flex:1;">
-        <div class="form-field" style="gap:1px">
-          <label>Buyer:</label>
-          <p>{{ invoiceInst.buyerId.name }}</p>
-          <p>GSTIN: {{ invoiceInst.buyerId.gstin }}</p>
-          <p>{{ invoiceInst.buyerId.adr1 }}</p>
-          <p>{{ invoiceInst.buyerId.adr2 }}</p>
-          <p>{{ invoiceInst.buyerId.state }}, {{ invoiceInst.buyerId.pin }}</p>
+        <div class="form-field" style="gap:1px; width: 90%;">
+          {% if not isEdit %}
+            <div class="form-field">
+              {{ invoiceForm.userId.label_tag }}
+              {{ invoiceForm.userId }}
+            </div>
+          {% endif %}
+          {% if isEdit %}
+            <label>Buyer:</label>
+            <p>{{ invoiceInst.buyerId.name }}</p>
+            <p>GSTIN: {{ invoiceInst.buyerId.gstin }}</p>
+            <p>{{ invoiceInst.buyerId.adr1 }}</p>
+            <p>{{ invoiceInst.buyerId.adr2 }}</p>
+            <p>{{ invoiceInst.buyerId.state }}, {{ invoiceInst.buyerId.pin }}</p>
+          {% else %}
+            {{ invoiceForm.buyerId.label_tag }}
+            {{ invoiceForm.buyerId }}
+          {% endif %}
         </div>
       </div>
 
-            <div style="flex:1;">
-        <div class="form-field">
-          <label>Invoice Number: </label>
-          <p>{{invoiceForm.invNum}}</p>
-        </div>
+      <div style="flex:1">
+          <div class="form-field" style="width: 90%;">
+            <label>Invoice Number: </label>
+            <p>{{invoiceForm.invNum}}</p>
+          </div>
 
-        <div class="form-field" style="width: 80%;">
-          {{ invoiceForm.date.label_tag }}
-          {{ invoiceForm.date }}
-          {% if invoiceForm.date.errors %}
-            <div class="error">{{ invoiceForm.date.errors.0 }}</div>
-          {% endif %}
-        </div>
+          <div class="form-field" style="width: 90%;">
+            {{ invoiceForm.date.label_tag }}
+            {{ invoiceForm.date }}
+            {% if invoiceForm.date.errors %}
+              <div class="error">{{ invoiceForm.date.errors.0 }}</div>
+            {% endif %}
+          </div>
       </div>
     </div>
 
@@ -122,7 +142,11 @@ Edit Invoice {{ invoiceInst.invNum }}
     </div>
 
     <div style="margin-top: 1rem;">
-      <button type="button" id="add-item-button" class="btn-secondary" style="width: 200px">Add New Item</button>
+      <button type="button" id="add-item-button" class="btn-secondary" style="width: 200px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="margin: 0 5px 0 0;" viewBox="0 0 24 24"><path fill="currentColor" d="M7 20V8.975q0-.825.6-1.4T9.025 7H20q.825 0 1.413.587T22 9v7.175q0 .4-.15.763t-.425.637l-3.85 3.85q-.275.275-.638.425t-.762.15H9q-.825 0-1.412-.587T7 20M2.025 6.25q-.15-.825.325-1.487t1.3-.813L14.5 2.025q.8-.15 1.45.338t.85 1.287l.175.775q.125.5-.15.8t-.65.35t-.712-.137T15 4.75L14.825 4L4 5.925l1.5 8.6q.075.425-.15.762t-.65.413t-.75-.162t-.4-.663zM9 9v11h7l4-4V9zm4.5 6.5v2q0 .425.288.713t.712.287t.713-.288t.287-.712v-2h2q.425 0 .713-.288t.287-.712t-.288-.712t-.712-.288h-2v-2q0-.425-.288-.712T14.5 10.5t-.712.288t-.288.712v2h-2q-.425 0-.712.288t-.288.712t.288.713t.712.287z"/></svg>
+
+        Add New Item
+      </button>
     </div>
 
     <div class="totals" style="text-align: right; margin-top: 2rem; font-weight: 500;">
@@ -132,7 +156,25 @@ Edit Invoice {{ invoiceInst.invNum }}
     </div>
 
     <div style="margin-top: 1.5rem; display: flex; justify-content: center;">
-      <button type="submit" class="btn-primary" style="width: 100%;">Update Invoice</button>
+        <button type="submit" class="btn-primary" style="width: 100%;">
+          {% if isEdit %}
+            Update Invoice
+          {% else %}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              style="margin: 0 5px 0 0;"
+              width="1.2rem"
+              height="1.2rem"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h6v2H5v14h14v-6h2v6q0 .825-.587 1.413T19 21zm11-10V8h-3V6h3V3h2v3h3v2h-3v3z"
+              />
+            </svg>
+            Generate
+          {% endif %}
+        </button>
     </div>
 
   </form>

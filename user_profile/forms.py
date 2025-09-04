@@ -1,11 +1,10 @@
 from django import forms
 from .models import Profile
 
-class ProfileEditForm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        exclude = ['logo']
         labels = {
             'name': 'Name',
             'adr1': 'Address Line 1',
@@ -18,4 +17,5 @@ class ProfileEditForm(forms.ModelForm):
             'bankName':'Bank Name',
             'bankAcc':'Account Number',
             'bankIfsc':'IFSC Code',
+            'logo':'Logo'
         }

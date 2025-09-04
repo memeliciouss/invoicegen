@@ -15,7 +15,7 @@ class Profile(models.Model):
     bankName = models.CharField(max_length=64)
     bankAcc = models.CharField(max_length=32)
     bankIfsc = models.CharField(max_length=32)
-    logo = models.ImageField(upload_to='asset/', blank=True, null=True)
+    logo = models.ImageField(upload_to='asset_logo/', blank=True, null=True)
 
     def __str__(self):
         return self.name

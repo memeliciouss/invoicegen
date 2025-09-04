@@ -8,9 +8,17 @@ from invoice.models import Invoice, Items
 
 class newInvoiceForm(forms.ModelForm):
     userId  = forms.ModelChoiceField(
-        queryset=Profile.objects.all().order_by('name'),
+        queryset=Profile.objects.all().order_by('userId'),
         label='Select User',
         empty_label='Select User')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Prefill with first user if not already set
+        if not self.initial.get('userId') and not self.data.get('userId'):
+            first_user = Profile.objects.order_by('userId').first()
+            if first_user:
+                self.fields['userId'].initial = first_user.pk
     
     buyerId  = forms.ModelChoiceField(
         queryset=buyer.objects.all().order_by('name'),

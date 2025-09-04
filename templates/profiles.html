@@ -41,7 +41,7 @@
                             <strong>Bank Details:</strong><br>
                             Bank: {{ profile.bankName }}<br>
                             Account No: {{ profile.bankAcc }}<br>
-                            IFSC: {{ profile.bankIfsc }}
+                            IFSC Code: {{ profile.bankIfsc }}
                         </p>
                     </div>
                     
@@ -56,5 +56,10 @@
         {% else %}
             <p>No profiles found.</p>
         {% endif %}
+
+        <button class="btn-secondary" onclick="location.href='/profile/create'"
+>
+            Create new Profile
+        </button>
     </div>
 {% endblock %}

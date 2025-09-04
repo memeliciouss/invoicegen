@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block body %}
+    <div class="card" style="margin-top: 20px;">
+        <h3 style="margin:0 0 1rem 0;">
+           {{ title }} 
+        </h3>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-field">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+            </div>
+            
+            <div class="form-field">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+            
+            <div class="form-field">
+                {{ form.contact.label_tag }}
+                {{ form.contact }}
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <div class="form-field" style="flex: 1;">
+                    {{ form.adr1.label_tag }}
+                    {{ form.adr1 }}
+                </div>
+                <div class="form-field" style="flex: 1;">
+                    {{ form.adr2.label_tag }}
+                    {{ form.adr2 }}
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <div class="form-field" style="flex: 1;">
+                    {{ form.state.label_tag }}
+                    {{ form.state }}
+                </div>
+                <div class="form-field" style="flex: 1;">
+                    {{ form.pin.label_tag }}
+                    {{ form.pin }}
+                </div>
+            </div>
+
+            <div class="form-field">
+                {{ form.gstin.label_tag }}
+                {{ form.gstin }}
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <div class="form-field" style="flex: 1;">
+                    {{ form.bankName.label_tag }}
+                    {{ form.bankName }}
+                </div>
+                <div class="form-field" style="flex: 1;">
+                    {{ form.bankAcc.label_tag }}
+                    {{ form.bankAcc }}
+                </div>
+                <div class="form-field" style="flex: 1;">
+                    {{ form.bankIfsc.label_tag }}
+                    {{ form.bankIfsc }}
+                </div>
+            </div>
+
+                <div class="form-field">
+                        {{ form.logo.label_tag }}
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="file" name="logo" accept="image/*">
+                            {% if form.instance.logo %}
+                                <img src="{{ form.instance.logo.url }}" alt="logo"
+                                     style="max-width:100px; max-height:100px; border:1px solid #ccc;">
+                            {% endif %}
+                        </div>
+                </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">
+                Update Details
+            </button>
+        </form>
+    </div>
+{% endblock %}
